@@ -30,7 +30,8 @@
                      Width="100"
                      Text="{Binding SearchValue}"/>
             <Button Content="Search"
-                    Margin="10,0,0,0"/>
+                    Margin="10,0,0,0"
+                    Command="{Binding SearchForWeatherDataCommand}"/>
         </StackPanel>
         
         <Border Grid.Row="1"
@@ -39,7 +40,8 @@
                 BorderThickness="1"
                 BorderBrush="Black">
             
-            <TextBlock Margin="5"/>
+            <TextBlock Margin="5"
+                       Text="{Binding Result}"/>
         </Border>
         
     </Grid>

@@ -13,7 +13,7 @@ namespace Wifi.WeatherForeCast.YrApi
             // https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.93&lon=10.72&altitude=90
 
 
-            string requestString = GetRequestString(latitude.ToString(), longitude.ToString());
+            string requestString = GetRequestString(latitude.ToString().Replace(",", "."), longitude.ToString().Replace(",", "."));
 
             HttpClient client = new HttpClient();
             //client.BaseAddress = new Uri(requestString);
