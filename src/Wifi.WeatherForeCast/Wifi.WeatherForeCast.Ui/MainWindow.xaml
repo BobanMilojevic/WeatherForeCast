@@ -7,6 +7,31 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Margin="5">
+            
+            <TextBox Grid.Row="0"
+                     Width="100"/>
+            <Button Content="Search"
+                    Width="100"
+                    Margin="10,0,0,0"/>
+        </StackPanel>
+        
+        <Border Grid.Row="1"
+                Margin="5"
+                BorderThickness="3"
+                BorderBrush="Black">
+            <TextBlock Margin="5"/>
+        </Border>
+        
     </Grid>
 </Window>
