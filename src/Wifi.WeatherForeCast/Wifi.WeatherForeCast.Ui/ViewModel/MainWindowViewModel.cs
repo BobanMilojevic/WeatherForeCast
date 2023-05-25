@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wifi.WeatherForeCast.Geodata.Apis;
-using Wifi.WeatherForeCast.Geodata.Models;
+using Wifi.WeatherForeCast.Model;
 using Wifi.WeatherForeCast.YrApi;
 
 namespace Wifi.WeatherForeCast.Ui.ViewModel;

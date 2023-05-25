@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Wifi.WeatherForeCast.Geodata.Models;
 using Newtonsoft.Json;
 using Wifi.WeatherForeCast.Geodata.Interfaces;
+using Wifi.WeatherForeCast.Model;
 
 namespace Wifi.WeatherForeCast.Geodata.Apis
 {

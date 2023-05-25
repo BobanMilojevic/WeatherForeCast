@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wifi.WeatherForeCast.Geodata.Models;
+using Wifi.WeatherForeCast.Model;
 
 namespace Wifi.WeatherForeCast.Geodata.Interfaces
 {

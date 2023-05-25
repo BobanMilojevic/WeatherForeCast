@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Drawing;
+using Wifi.WeatherForeCast.YrApi.HelperJsonObject;
 
 namespace Wifi.WeatherForeCast.YrApi
 {
