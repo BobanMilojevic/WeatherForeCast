@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Wifi.WeatherForeCast.Geodata.Apis;
+using Wifi.WeatherForeCast.Business;
 using Wifi.WeatherForeCast.Model;
-using Wifi.WeatherForeCast.YrApi;
 
 namespace Wifi.WeatherForeCast.Ui.ViewModel;
 
@@ -11,24 +12,13 @@ public class MainWindowViewModel : ObservableValidator
 {
     private string _searchValue = "Feldkirch Austria";
     private string _result;
-
+    private WeatherItem _selectedWeatherItem;
+    
     public MainWindowViewModel()
     {
-        SearchForWeatherDataCommand = new AsyncRelayCommand(SearchForWeatherData);
+        LoadDataAsync();
     }
-
-    private async Task SearchForWeatherData()
-    {
-        GeodataApi geodata = new GeodataApi();
-
-        Coordinates coordinates = geodata.MainApiForBoban(SearchValue);
-
-        WeatherItem weatherItem = await HelperClass.GetInstantWeatherItem(coordinates.Latitude, coordinates.Longitude);
-
-        Result = weatherItem.Temperature.ToString();
-    }
-
-
+    
     public string SearchValue
     {
         get => _searchValue;
@@ -38,13 +28,20 @@ public class MainWindowViewModel : ObservableValidator
         }
     }
 
-    public string Result 
+    public WeatherItem SelectedWeatherItem
     {
-        get => _result;
+        get => _selectedWeatherItem; 
         set
         {
-            SetProperty(ref _result, value);
-        } }
+            SetProperty(ref _selectedWeatherItem, value);
+        }
+    }
     
-    public IAsyncRelayCommand SearchForWeatherDataCommand { get; }
+    private async Task LoadDataAsync()
+    {
+        WeatherItemService service = new WeatherItemService();
+        var items = await service.GetWeatherDataOfRemainingDay();
+
+        _selectedWeatherItem = items.FirstOrDefault();
+    }
 }
