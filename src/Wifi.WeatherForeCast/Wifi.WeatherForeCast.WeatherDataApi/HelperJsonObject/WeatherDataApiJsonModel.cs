@@ -1,4 +1,4 @@
-﻿namespace Wifi.WeatherForeCast.YrApi.HelperJsonObject
+﻿namespace Wifi.WeatherForeCast.WeatherDataApi.HelperJsonObject
 {
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);

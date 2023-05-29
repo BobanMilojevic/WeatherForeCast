@@ -1,14 +1,71 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
-using System.Net.Http.Headers;
-using System.Drawing;
-using Wifi.WeatherForeCast.YrApi.HelperJsonObject;
+﻿using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Wifi.WeatherForeCast.Model;
+using Wifi.WeatherForeCast.WeatherDataApi.HelperJsonObject;
 
-namespace Wifi.WeatherForeCast.YrApi
+namespace Wifi.WeatherForeCast.WeatherDataApi
 {
-    public class HelperClass
+    public class WeatherData
     {
-        public static async Task<Root> FetchData(double latitude = 59.93, double longitude = 10.72)
+        public async Task<List<WeatherItem>> GetAllDataAtHourOfDay(double lattitude, double longitude, int hourOfDay)
+        {
+            Root yrWeatherData = new();
+
+            yrWeatherData = await FetchData(lattitude, longitude);
+
+            List<Timeseries> data = new List<Timeseries>();
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
+        }
+        
+        public async Task<List<WeatherItem>> GetAllDataAtHourOfDayForTheNext_n_Days(double lattitude, double longitude, int hourOfDay, int n_Days)
+        {
+            Root yrWeatherData = new();
+            
+            yrWeatherData = await FetchData(lattitude, longitude);
+
+
+            List<Timeseries> data = new List<Timeseries>();
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay && x.time.Date > DateTime.Now.Date).Take(n_Days).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
+        }
+        
+        public async Task<List<WeatherItem>> GetAllDataForRemainingDay(double lattitude, double longitude)
+        {
+            Root yrWeatherData = new();
+
+            yrWeatherData = await FetchData(lattitude, longitude);
+
+            List<Timeseries> data = new List<Timeseries>();
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Date == DateTime.Now.Date).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
+        }
+        
+        private async Task<Root> FetchData(double latitude = 59.93, double longitude = 10.72)
         {
             // https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.93&lon=10.72&altitude=90
             // https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.93&lon=10.72&altitude=90
@@ -32,73 +89,13 @@ namespace Wifi.WeatherForeCast.YrApi
             return wetterdaten;
 
         }
-
-
-        public static string GetRequestString(string latitude, string longitude, string altitude = "0")
+        
+        private string GetRequestString(string latitude, string longitude, string altitude = "0")
         {
             string baseUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=";
             return $"{baseUrl}{latitude}&lon={longitude}"; // &altitude={altitude}";   
         }
-
-        public async static Task<List<WeatherItem>> GetAllDataAtHourOfDay(double lattitude, double longitude, int hourOfDay)
-        {
-            Root yrWeatherData = new();
-
-            yrWeatherData = await FetchData(lattitude, longitude);
-
-            List<Timeseries> data = new List<Timeseries>();
-            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay).ToList();
-
-            List<WeatherItem> weatherItems = new List<WeatherItem>();
-            foreach (var item in data)
-            {
-                WeatherItem weatherItem = new WeatherItem();
-                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
-                weatherItems.Add(weatherItem);
-            }
-            return weatherItems;
-        }
-
-        public async static Task<List<WeatherItem>> GetAllDataAtHourOfDayForTheNext_n_Days(double lattitude, double longitude, int hourOfDay, int n_Days)
-        {
-            Root yrWeatherData = new();
-            
-            yrWeatherData = await FetchData(lattitude, longitude);
-
-
-            List<Timeseries> data = new List<Timeseries>();
-            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay && x.time.Date > DateTime.Now.Date).Take(n_Days).ToList();
-
-            List<WeatherItem> weatherItems = new List<WeatherItem>();
-            foreach (var item in data)
-            {
-                WeatherItem weatherItem = new WeatherItem();
-                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
-                weatherItems.Add(weatherItem);
-            }
-            return weatherItems;
-        }
-
-        public async static Task<List<WeatherItem>> GetAllDataForRemainingDay(double lattitude, double longitude)
-        {
-            Root yrWeatherData = new();
-
-            yrWeatherData = await FetchData(lattitude, longitude);
-
-            List<Timeseries> data = new List<Timeseries>();
-            data = yrWeatherData.properties.timeseries.Where(x => x.time.Date == DateTime.Now.Date).ToList();
-
-            List<WeatherItem> weatherItems = new List<WeatherItem>();
-            foreach (var item in data)
-            {
-                WeatherItem weatherItem = new WeatherItem();
-                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
-                weatherItems.Add(weatherItem);
-            }
-            return weatherItems;
-
-        }
-
+        
         //From ChatGpt 24.05.2023
         public static double CalculatePerceivedTemperature(double temperature, double windSpeed)
         {
@@ -123,7 +120,7 @@ namespace Wifi.WeatherForeCast.YrApi
 
         }
 
-        public static async Task<WeatherItem> GetInstantWeatherItem(double lattitude, double longitude)
+        public async Task<WeatherItem> GetInstantWeatherItem(double lattitude, double longitude)
         {
             Root YrWeatherData = new();
             WeatherItem weatherItem = new();

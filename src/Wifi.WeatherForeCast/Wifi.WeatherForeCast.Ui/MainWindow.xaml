@@ -51,7 +51,7 @@
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
                        Width="200" Height="200"/>
-                <Label DockPanel.Dock="Top" Content="Temperatur" HorizontalAlignment="Center"/>
+                <Label DockPanel.Dock="Top" Content="{Binding SelectedWeatherItem.Temperature}" HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" Content="gefühlte Temperatur" HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" Content="Luftdruck" HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" Content="Luftfeuchtigkeit" HorizontalAlignment="Center"/>
