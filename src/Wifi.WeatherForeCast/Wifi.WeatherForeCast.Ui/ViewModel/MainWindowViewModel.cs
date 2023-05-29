@@ -12,16 +12,43 @@ namespace Wifi.WeatherForeCast.Ui.ViewModel;
 
 public class MainWindowViewModel : ObservableValidator
 {
+    private int _count;
     private string _searchValue;
     private string _dayPeriod;
+    private string _iconSource;
     private WeatherItem _selectedWeatherItem;
     private List<WeatherItem> _weatherRemainingDayItemsList;
 
     public MainWindowViewModel()
     {
         LoadDataAsync();
+
+        NextWeatherItemCommand = new AsyncRelayCommand(NextWeatherItem);
+        PreviousWeatherItemCommand = new AsyncRelayCommand(PreviousWeatherItem);
     }
-    
+
+    private async Task PreviousWeatherItem()
+    {
+        if(_count > 0)
+        {
+            _count--;
+            this.SelectedWeatherItem = this.WeatherRemainingDayItemsList[_count];
+            GetDayPeriod(this.SelectedWeatherItem);
+            GetIconSource(this.SelectedWeatherItem);
+        }
+    }
+
+    private async Task NextWeatherItem()
+    {
+        if(_count < WeatherRemainingDayItemsList.Count)
+        {
+            _count++;
+            this.SelectedWeatherItem = this.WeatherRemainingDayItemsList[_count];
+            GetDayPeriod(this.SelectedWeatherItem);
+            GetIconSource(this.SelectedWeatherItem);
+        }
+    }
+
     public string SearchValue
     {
         get => _searchValue;
@@ -34,7 +61,19 @@ public class MainWindowViewModel : ObservableValidator
     public string DayPeriod
     {
         get => _dayPeriod;
-        set;
+        set
+        {
+            SetProperty(ref _dayPeriod, value);
+        }
+    }
+
+    public string IconSource
+    {
+        get => _iconSource;
+        set
+        {
+            SetProperty(ref _iconSource, value);
+        }
     }
 
     public WeatherItem SelectedWeatherItem
@@ -57,6 +96,9 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _weatherRemainingDayItemsList, value);
         }
     }
+    
+    public IAsyncRelayCommand NextWeatherItemCommand { get; }
+    public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
     
     private async Task LoadDataAsync()
     {
@@ -85,6 +127,32 @@ public class MainWindowViewModel : ObservableValidator
         }
 
         this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
+        GetIconSource(this.SelectedWeatherItem);
+        GetDayPeriod(this.SelectedWeatherItem);
+    }
 
+    private void GetIconSource(WeatherItem item)
+    {
+        this.IconSource = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";
+    }
+    
+    private void GetDayPeriod(WeatherItem item)
+    {
+        if (item.DateTime.Hour == 6)
+        {
+            this.DayPeriod = "Vormittag";
+        }
+        if (item.DateTime.Hour == 12)
+        {
+            this.DayPeriod = "Nachmittag";
+        }
+        if (item.DateTime.Hour == 18)
+        {
+            this.DayPeriod = "Abend";
+        }
+        if (item.DateTime.Hour == 23)
+        {
+            this.DayPeriod = "Nacht";
+        }
     }
 }

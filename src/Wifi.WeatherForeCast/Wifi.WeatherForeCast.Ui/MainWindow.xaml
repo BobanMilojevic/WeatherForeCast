@@ -45,9 +45,11 @@
             <DockPanel Grid.Row="0"
                        Grid.Column="1">
 
-                <Label DockPanel.Dock="Top" Content="Vormittag" HorizontalAlignment="Center"/>
+                <Label DockPanel.Dock="Top" 
+                       Content="{Binding DayPeriod, UpdateSourceTrigger=PropertyChanged}" 
+                       HorizontalAlignment="Center"/>
                 <Image DockPanel.Dock="Top" 
-                       Source="pack://siteoforigin:,,,/Resources/weathericon/clearsky_day.png" 
+                       Source="{Binding IconSource, UpdateSourceTrigger=PropertyChanged}" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
                        Width="200" Height="200"/>
@@ -57,8 +59,8 @@
                 <Label DockPanel.Dock="Top" Content="Luftfeuchtigkeit" HorizontalAlignment="Center"/>
             </DockPanel>
 
-            <Button Grid.Column="0"/>
-            <Button Grid.Column="2"/>
+            <Button Grid.Column="0" Command="{Binding PreviousWeatherItemCommand}"/>
+            <Button Grid.Column="2" Command="{Binding NextWeatherItemCommand}"/>
         </Grid>
 
         <ListView Grid.Row="2"
