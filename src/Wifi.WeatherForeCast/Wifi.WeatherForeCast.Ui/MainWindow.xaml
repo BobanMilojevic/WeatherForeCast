@@ -30,15 +30,16 @@
                      Text="{Binding SearchValue}"/>
         </DockPanel>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Vertical">
+        <DockPanel Grid.Row="1" LastChildFill="True">
 
-            <Image/>
-            <Label Content="Felkirch"/>
-            <Label Content="Temperatur"/>
-            <Label Content="Luftdruck"/>
-            <Label Content=""/>
-        </StackPanel>
+            <Image DockPanel.Dock="Top"
+                   Source="pack://siteoforigin:,,,/Resources/weathericon/fog.png"/>
+            <Label DockPanel.Dock="Top" 
+                   Content="Felkirch"/>
+            <Label DockPanel.Dock="Top" Content="Temperatur"/>
+            <Label DockPanel.Dock="Top" Content="Luftdruck"/>
+            <Label DockPanel.Dock="Top" Content=""/>
+        </DockPanel>
         
     </Grid>
 </Window>
