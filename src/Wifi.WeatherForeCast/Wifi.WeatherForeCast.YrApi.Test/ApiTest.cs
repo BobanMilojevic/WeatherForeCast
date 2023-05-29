@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wifi.WeatherForeCast.Model;
 
 namespace Wifi.WeatherForeCast.YrApi
 {
@@ -20,17 +21,17 @@ namespace Wifi.WeatherForeCast.YrApi
         public async Task Test()
         {
             WeatherItem weatherItem = new WeatherItem();
-            weatherItem = await HelperClass.GetInstantWeatherItem(47.37197, 9.8704901);
+            weatherItem = await YrApi.GetInstantWeatherItem(47.37197, 9.8704901);
 
             Assert.AreEqual(weatherItem.DateTime.Date, DateTime.Now.Date);
 
             List<WeatherItem> weatherItems = new();
-            weatherItems = await HelperClass.GetAllDataAtHourOfDayForTheNext_n_Days(47.37197, 9.8704901, 12, 5);
+            weatherItems = await YrApi.GetAllDataAtHourOfDayForTheNext_n_Days(47.37197, 9.8704901, 12, 5);
             
             Assert.AreEqual(weatherItems.Count, 5);
 
 
-            weatherItems = await HelperClass.GetAllDataForRemainingDay(47.37197, 9.8704901);
+            weatherItems = await YrApi.GetAllDataForRemainingDay(47.37197, 9.8704901);
 
             Assert.Greater(weatherItems.Count, 0);
 
