@@ -40,7 +40,7 @@ public class MainWindowViewModel : ObservableValidator
 
     private async Task NextWeatherItem()
     {
-        if(_count < WeatherRemainingDayItemsList.Count)
+        if(_count+1 < WeatherRemainingDayItemsList.Count)
         {
             _count++;
             this.SelectedWeatherItem = this.WeatherRemainingDayItemsList[_count];
