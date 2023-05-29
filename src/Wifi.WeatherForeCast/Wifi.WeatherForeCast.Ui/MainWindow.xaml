@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Wifi.WeatherForeCast.Ui.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"
+        Height="800"
+        Width="450"
+        WindowStartupLocation="CenterScreen">
     
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -14,35 +17,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="1"
-                    Orientation="Horizontal"
-                    Margin="5">
+
+        <DockPanel Grid.Row="0"
+                   LastChildFill="True">
             
-            <TextBox Grid.Row="0"
-                     Width="100"
+            <TextBox DockPanel.Dock="Top" 
+                     Margin="5"
+                     FontSize="20"
                      Text="{Binding SearchValue}"/>
-            <Button Content="Search"
-                    Margin="10,0,0,0"
-                    Command="{Binding SearchForWeatherDataCommand}"/>
+        </DockPanel>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Vertical">
+
+            <Image/>
+            <Label Content="Felkirch"/>
+            <Label Content="Temperatur"/>
+            <Label Content="Luftdruck"/>
+            <Label Content=""/>
         </StackPanel>
-        
-        <Border Grid.Row="1"
-                Grid.Column="0"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Black">
-            
-            <TextBlock Margin="5"
-                       Text="{Binding Result}"/>
-        </Border>
         
     </Grid>
 </Window>
