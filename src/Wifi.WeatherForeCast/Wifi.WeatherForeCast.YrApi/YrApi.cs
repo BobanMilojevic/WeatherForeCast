@@ -2,11 +2,12 @@
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Drawing;
+using Wifi.WeatherForeCast.Model;
 using Wifi.WeatherForeCast.YrApi.HelperJsonObject;
 
 namespace Wifi.WeatherForeCast.YrApi
 {
-    public class HelperClass
+    public class YrApi
     {
         public static async Task<Root> FetchData(double latitude = 59.93, double longitude = 10.72)
         {
