@@ -16,5 +16,6 @@ namespace Wifi.WeatherForeCast.YrApi
         public double Humidity { get; set; }
         public double Pressure { get; set; }
         public double WindSpeed { get; set; }
+        public string SymbolCode { get; set; }
     }
 }

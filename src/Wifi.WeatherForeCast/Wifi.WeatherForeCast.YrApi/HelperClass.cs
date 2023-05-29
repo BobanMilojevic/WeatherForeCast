@@ -40,23 +40,63 @@ namespace Wifi.WeatherForeCast.YrApi
             return $"{baseUrl}{latitude}&lon={longitude}"; // &altitude={altitude}";   
         }
 
-        public static List<Timeseries> GetAllDataAtHourOfDay(Root wetterdaten, int hourOfDay)
+        public async static Task<List<WeatherItem>> GetAllDataAtHourOfDay(double lattitude, double longitude, int hourOfDay)
         {
+            Root yrWeatherData = new();
+
+            yrWeatherData = await FetchData(lattitude, longitude);
+
             List<Timeseries> data = new List<Timeseries>();
-            data = wetterdaten.properties.timeseries.Where(x => x.time.Hour == hourOfDay).ToList();
-            return data;
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
         }
 
-        public static List<Timeseries> GetAllDataAtHourOfDayForTheNext_n_Days(Root wetterdaten, int hourOfDay, int n_Days)
+        public async static Task<List<WeatherItem>> GetAllDataAtHourOfDayForTheNext_n_Days(double lattitude, double longitude, int hourOfDay, int n_Days)
         {
+            Root yrWeatherData = new();
+            
+            yrWeatherData = await FetchData(lattitude, longitude);
+
+
             List<Timeseries> data = new List<Timeseries>();
-            data = wetterdaten.properties.timeseries.Where(x => x.time.Hour == hourOfDay && x.time.Date > DateTime.Now.Date).Take(n_Days).ToList();
-            return data;
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Hour == hourOfDay && x.time.Date > DateTime.Now.Date).Take(n_Days).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
         }
 
-        public static List<Timeseries> GetAllDataForRemainingDay(Root wetterdaten)
+        public async static Task<List<WeatherItem>> GetAllDataForRemainingDay(double lattitude, double longitude)
         {
-            return wetterdaten.properties.timeseries.Where(x => x.time.Date == DateTime.Now.Date).ToList();
+            Root yrWeatherData = new();
+
+            yrWeatherData = await FetchData(lattitude, longitude);
+
+            List<Timeseries> data = new List<Timeseries>();
+            data = yrWeatherData.properties.timeseries.Where(x => x.time.Date == DateTime.Now.Date).ToList();
+
+            List<WeatherItem> weatherItems = new List<WeatherItem>();
+            foreach (var item in data)
+            {
+                WeatherItem weatherItem = new WeatherItem();
+                weatherItem = ConvertFormYrDetailsToWeaterItem(item);
+                weatherItems.Add(weatherItem);
+            }
+            return weatherItems;
+
         }
 
         //From ChatGpt 24.05.2023
@@ -77,6 +117,7 @@ namespace Wifi.WeatherForeCast.YrApi
             weatherItem.PerceivedTemperature = CalculatePerceivedTemperature(weatherItem.Temperature, weatherItem.WindSpeed);
             weatherItem.Humidity = item.data.instant.details.relative_humidity;
             weatherItem.Pressure = item.data.instant.details.air_pressure_at_sea_level;
+            weatherItem.SymbolCode = item.data.next_6_hours.summary.symbol_code;
 
             return weatherItem;
 
