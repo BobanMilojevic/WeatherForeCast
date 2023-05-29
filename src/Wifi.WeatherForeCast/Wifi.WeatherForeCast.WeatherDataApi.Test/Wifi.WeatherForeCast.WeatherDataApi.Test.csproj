@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wifi.WeatherForeCast.YrApi\Wifi.WeatherForeCast.YrApi.csproj" />
+    <ProjectReference Include="..\Wifi.WeatherForeCast.Model\Wifi.WeatherForeCast.Model.csproj" />
+    <ProjectReference Include="..\Wifi.WeatherForeCast.WeatherDataApi\Wifi.WeatherForeCast.WeatherDataApi.csproj" />
   </ItemGroup>
 
+	
 </Project>
