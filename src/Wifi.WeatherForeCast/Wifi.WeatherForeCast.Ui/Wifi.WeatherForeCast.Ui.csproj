@@ -9,6 +9,13 @@
 
     <ItemGroup>
       <None Remove="next_item.png" />
+      <None Remove="Resources\controlicons\**" />
+      <None Update="Resources\controlicon\next_item.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\controlicon\previous_item.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -25,12 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Resources\controlicons\next_item.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Resources\controlicons\previous_item.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="Resources\weathericon\clearsky_day.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -280,6 +281,22 @@
       <None Update="Resources\weathericon\snowshowers_polartwilight.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Resources\controlicons\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Resources\controlicons\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Resources\controlicons\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\controlicon\" />
     </ItemGroup>
 
 </Project>

@@ -85,13 +85,13 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding PreviousWeatherItemCommand}">
-                <Image Source="pack://siteoforigin:,,,/Resources/controlicons/previous_item.png"/>
+                <Image Source="pack://siteoforigin:,,,/Resources/controlicon/previous_item.png"/>
             </Button>
             <Button Grid.Column="2"
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding NextWeatherItemCommand}">
-                <Image Source="pack://siteoforigin:,,,/Resources/controlicons/next_item.png"/>
+                <Image Source="pack://siteoforigin:,,,/Resources/controlicon/next_item.png"/>
             </Button>
         </Grid>
 
