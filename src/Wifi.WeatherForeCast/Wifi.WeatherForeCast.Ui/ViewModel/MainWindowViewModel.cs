@@ -16,6 +16,8 @@ public class MainWindowViewModel : ObservableValidator
     private string _searchValue;
     private string _dayPeriod;
     private string _iconSource;
+    private int[] _numberOfDays;
+    private int _selectedNumberOfDays;
     private WeatherItem _selectedWeatherItem;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
@@ -106,6 +108,25 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _weatherNDaysItemsList, value);
         }
     }
+
+    public int[] NumberOfDays
+    {
+        get => _numberOfDays;
+        set
+        {
+            SetProperty(ref _numberOfDays, value);
+        }
+    }
+    
+    public int SelectedNumberOfDays
+    {
+        get => _selectedNumberOfDays;
+        set
+        {
+            SetProperty(ref _selectedNumberOfDays, value);
+            UpdateWeatherNDayItemsList();
+        }
+    }
     
     public IAsyncRelayCommand NextWeatherItemCommand { get; }
     public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
@@ -116,20 +137,12 @@ public class MainWindowViewModel : ObservableValidator
         this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
         this.WeatherNDayItemsList = new ObservableCollection<WeatherItem>();
 
-        var items = await service.GetWeatherDataOfNDays();
+        _numberOfDays = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+        this.SelectedNumberOfDays = 0;
 
-        foreach (var item in items)
-        {
-            this.WeatherNDayItemsList.Add(item);
-        }
+        UpdateWeatherNDayItemsList();
 
-        foreach (var item in this.WeatherNDayItemsList)
-        {
-            string symbolCode = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";
-            item.SymbolCode = symbolCode;
-        }
-        
-        items = await service.GetWeatherDataOfRemainingDay();
+        var items = await service.GetWeatherDataOfRemainingDay();
        
         foreach (var item in items)
         {
@@ -153,6 +166,27 @@ public class MainWindowViewModel : ObservableValidator
         GetDayPeriod(this.SelectedWeatherItem);
     }
 
+    private async Task UpdateWeatherNDayItemsList()
+    {
+        WeatherItemService service = new WeatherItemService();
+        
+        this.WeatherNDayItemsList.Clear();
+        
+        var items = await service.GetWeatherDataOfNDays();
+
+        int index = 0;
+        foreach (var item in items)
+        {
+            if (index <= this.SelectedNumberOfDays)
+            {
+                string symbolCode = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";
+                item.SymbolCode = symbolCode;
+                this.WeatherNDayItemsList.Add(item);
+                index++;
+            }
+        }
+    }
+    
     private void GetIconSource(WeatherItem item)
     {
         this.IconSource = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";

@@ -7,7 +7,9 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-    
+
+    <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}" />
+
     <Style TargetType="Image" x:Key="imgListItem">
         <Setter Property="Width" Value="35"/>
         <Setter Property="Height" Value="35"/>
