@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="next_item.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     </ItemGroup>
 
@@ -17,6 +21,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="next_item.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Resources\controlicons\next_item.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\controlicons\previous_item.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Resources\weathericon\clearsky_day.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

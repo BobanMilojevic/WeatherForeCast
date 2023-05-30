@@ -54,20 +54,45 @@
                        VerticalAlignment="Center" 
                        Width="200" Height="200"/>
                 
-                <StackPanel DockPanel.Dock="Top"
-                            Orientation="Horizontal">
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Temperature:"/>
-                    <Label Content="{Binding SelectedWeatherItem.Temperature, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding SelectedWeatherItem.Temperature, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="°C"/>
-                </StackPanel>
-                
-                <Label DockPanel.Dock="Top" Content="{Binding SelectedWeatherItem.Humidity}" HorizontalAlignment="Center"/>
-                <Label DockPanel.Dock="Top" Content="Luftdruck" HorizontalAlignment="Center"/>
-                <Label DockPanel.Dock="Top" Content="Luftfeuchtigkeit" HorizontalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Gefüllte Temp:"/>
+                    <Label Content="{Binding SelectedWeatherItem.PerceivedTemperature, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="°C"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Luftdruck:"/>
+                    <Label Content="{Binding SelectedWeatherItem.Pressure, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="mBar"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Luftfeuchtigkeit:"/>
+                    <Label Content="{Binding SelectedWeatherItem.Humidity, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="%"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Windgeschwindigkeit:"/>
+                    <Label Content="{Binding SelectedWeatherItem.WindSpeed, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="m/s"/>
+                </DockPanel>
             </DockPanel>
 
-            <Button Grid.Column="0" Command="{Binding PreviousWeatherItemCommand}"/>
-            <Button Grid.Column="2" Command="{Binding NextWeatherItemCommand}"/>
+            <Button Grid.Column="0" 
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding PreviousWeatherItemCommand}">
+                <Image Source="pack://siteoforigin:,,,/Resources/controlicons/previous_item.png"/>
+            </Button>
+            <Button Grid.Column="2"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding NextWeatherItemCommand}">
+                <Image Source="pack://siteoforigin:,,,/Resources/controlicons/next_item.png"/>
+            </Button>
         </Grid>
 
         <ListView Grid.Row="2"
