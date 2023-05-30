@@ -17,7 +17,7 @@ public class MainWindowViewModel : ObservableValidator
     private string _dayPeriod;
     private string _iconSource;
     private WeatherItem _selectedWeatherItem;
-    private List<WeatherItem> _weatherRemainingDayItemsList;
+    private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
 
     public MainWindowViewModel()
     {
@@ -88,7 +88,7 @@ public class MainWindowViewModel : ObservableValidator
         }
     }
 
-    public List<WeatherItem> WeatherRemainingDayItemsList
+    public ObservableCollection<WeatherItem> WeatherRemainingDayItemsList
     {
         get => _weatherRemainingDayItemsList; 
         set
@@ -103,15 +103,22 @@ public class MainWindowViewModel : ObservableValidator
     private async Task LoadDataAsync()
     {
         WeatherItemService service = new WeatherItemService();
-        this.WeatherRemainingDayItemsList = new List<WeatherItem>();
+        this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
         var items = await service.GetWeatherDataOfRemainingDay();
 
         foreach (var item in items)
         {
-            if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
-                item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
+            if (item.DateTime.Hour == DateTime.Now.Hour)
             {
                 this.WeatherRemainingDayItemsList.Add(item);
+            }
+            else 
+            {
+                if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
+                    item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
+                {
+                    this.WeatherRemainingDayItemsList.Add(item);
+                }
             }
         }
 
@@ -127,6 +134,10 @@ public class MainWindowViewModel : ObservableValidator
     
     private void GetDayPeriod(WeatherItem item)
     {
+        if (item.DateTime.Hour == DateTime.Now.Hour)
+        {
+            this.DayPeriod = "Jetzt";
+        }
         if (item.DateTime.Hour == 6)
         {
             this.DayPeriod = "Vormittag";

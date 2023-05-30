@@ -53,7 +53,14 @@
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
                        Width="200" Height="200"/>
-                <Label DockPanel.Dock="Top" Content="{Binding SelectedWeatherItem.Temperature, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                
+                <StackPanel DockPanel.Dock="Top"
+                            Orientation="Horizontal">
+                    <Label Content="Temperature:"/>
+                    <Label Content="{Binding SelectedWeatherItem.Temperature, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                    <Label Content="°C"/>
+                </StackPanel>
+                
                 <Label DockPanel.Dock="Top" Content="{Binding SelectedWeatherItem.Humidity}" HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" Content="Luftdruck" HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" Content="Luftfeuchtigkeit" HorizontalAlignment="Center"/>
