@@ -137,13 +137,14 @@ public class MainWindowViewModel : ObservableValidator
             {
                 this.WeatherRemainingDayItemsList.Add(item);
             }
-            else 
+        }
+
+        foreach (var item in items)
+        {
+            if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
+                item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
             {
-                if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
-                    item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
-                {
-                    this.WeatherRemainingDayItemsList.Add(item);
-                }
+                this.WeatherRemainingDayItemsList.Add(item);
             }
         }
 
