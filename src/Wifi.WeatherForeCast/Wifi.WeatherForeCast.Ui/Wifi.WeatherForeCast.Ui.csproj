@@ -28,10 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="next_item.png" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="Resources\weathericon\clearsky_day.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

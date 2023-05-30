@@ -61,7 +61,7 @@
                 
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Temperature:"/>
-                    <Label>
+                    <Label ContentStringFormat="{Binding TemperatureFormatString}">
                         <Label.Content>
                             <MultiBinding Converter="{StaticResource TempConverter}">
                                 <Binding Path="SelectedWeatherItem.Temperature"/>
@@ -69,12 +69,17 @@
                             </MultiBinding>
                         </Label.Content>
                     </Label>
-                    <Label Content="°C"/>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Gefüllte Temp:"/>
-                    <Label Content="{Binding SelectedWeatherItem.PerceivedTemperature, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="{}{0:0.0}"/>
-                    <Label Content="°C"/>
+                    <Label ContentStringFormat="{Binding TemperatureFormatString}">
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource TempConverter}">
+                                <Binding Path="SelectedWeatherItem.PerceivedTemperature"/>
+                                <Binding Path="DataContext.IsDegree" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Luftdruck:"/>
@@ -137,10 +142,11 @@
             
             <ListView DockPanel.Dock="Top"
                       VerticalAlignment="Stretch"
-                      ItemsSource="{Binding WeatherNDayItemsList, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Path=WeatherNDayItemsList, UpdateSourceTrigger=PropertyChanged}"
                       ItemTemplate="{StaticResource ResourceKey=templCollectionItemListItem}"
                       AlternationCount="2"
                       ItemContainerStyle="{StaticResource ListBoxItemAlternatingStyle}"/>
+            <!-- ItemsSource="{Binding WeatherNDayItemsList, UpdateSourceTrigger=PropertyChanged}" -->
         </DockPanel>
         
 

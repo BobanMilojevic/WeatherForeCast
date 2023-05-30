@@ -19,6 +19,7 @@ public class MainWindowViewModel : ObservableValidator
     private int[] _numberOfDays;
     private int _selectedNumberOfDays;
     private bool _isDegree;
+    private string _temperatureStringFormat;
     private WeatherItem _selectedWeatherItem;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
@@ -26,7 +27,7 @@ public class MainWindowViewModel : ObservableValidator
     public MainWindowViewModel()
     {
         this.IsDegree = true;
-        
+
         LoadDataAsync();
 
         NextWeatherItemCommand = new AsyncRelayCommand(NextWeatherItem);
@@ -137,8 +138,19 @@ public class MainWindowViewModel : ObservableValidator
         set
         {
             SetProperty(ref _isDegree, value);
+            UpdateTempFormatstring();
         }
     }
+
+    public string TemperatureFormatString
+    {
+        get => _temperatureStringFormat;
+        set
+        {
+            SetProperty(ref _temperatureStringFormat, value);
+        }
+    }
+    
     
     public IAsyncRelayCommand NextWeatherItemCommand { get; }
     public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
@@ -232,6 +244,18 @@ public class MainWindowViewModel : ObservableValidator
         if (item.DateTime.Hour == 23)
         {
             this.DayPeriod = "Nacht";
+        }
+    }
+    
+    private void UpdateTempFormatstring()
+    {
+        if (this.IsDegree)
+        {
+            this.TemperatureFormatString = "{0:0.0}°C";
+        }
+        else
+        {
+            this.TemperatureFormatString = "{0:0.0}°F";
         }
     }
 }
