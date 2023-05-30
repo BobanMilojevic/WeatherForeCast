@@ -61,7 +61,7 @@
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Gefüllte Temp:"/>
-                    <Label Content="{Binding SelectedWeatherItem.PerceivedTemperature, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedWeatherItem.PerceivedTemperature, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="{}{0:0.0}"/>
                     <Label Content="°C"/>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -105,12 +105,12 @@
                         VerticalAlignment="Center"
                         Margin="5">
 
-                <Label Content="Wettervorhersage für die nächsten Tage"/>
+                <Label Content="Wettervorhersage in Tagen"/>
                 
                 <ComboBox Width="50"
                           Margin="5, 0, 5, 0"
-                          ItemsSource="{Binding NumberOfDays}"
-                          SelectedIndex="{Binding SelectedNumberOfDays}"/>
+                          ItemsSource="{Binding NumberOfDays, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedIndex="{Binding SelectedNumberOfDays, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <RadioButton Content="°C"
                              Margin="5, 0, 5, 0"
@@ -124,8 +124,8 @@
             </StackPanel>
             
             <ListView DockPanel.Dock="Top"
-                VerticalAlignment="Stretch"
-                      ItemsSource="{Binding WeatherNDayItemsList}"
+                      VerticalAlignment="Stretch"
+                      ItemsSource="{Binding WeatherNDayItemsList, UpdateSourceTrigger=PropertyChanged}"
                       ItemTemplate="{StaticResource ResourceKey=templCollectionItemListItem}"
                       AlternationCount="2"
                       ItemContainerStyle="{StaticResource ListBoxItemAlternatingStyle}"/>

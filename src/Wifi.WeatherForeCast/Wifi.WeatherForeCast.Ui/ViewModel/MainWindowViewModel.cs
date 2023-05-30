@@ -133,7 +133,6 @@ public class MainWindowViewModel : ObservableValidator
     
     private async Task LoadDataAsync()
     {
-        WeatherItemService service = new WeatherItemService();
         this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
         this.WeatherNDayItemsList = new ObservableCollection<WeatherItem>();
 
@@ -141,9 +140,21 @@ public class MainWindowViewModel : ObservableValidator
         this.SelectedNumberOfDays = 0;
 
         UpdateWeatherNDayItemsList();
+        UpdateWeatherRemainingDayItemsList();
 
+        this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
+        GetIconSource(this.SelectedWeatherItem);
+        GetDayPeriod(this.SelectedWeatherItem);
+    }
+
+    private async Task UpdateWeatherRemainingDayItemsList()
+    {
+        WeatherItemService service = new WeatherItemService();
+        
+        this.WeatherRemainingDayItemsList.Clear();
+        
         var items = await service.GetWeatherDataOfRemainingDay();
-       
+        
         foreach (var item in items)
         {
             if (item.DateTime.Hour == DateTime.Now.Hour)
@@ -160,12 +171,8 @@ public class MainWindowViewModel : ObservableValidator
                 this.WeatherRemainingDayItemsList.Add(item);
             }
         }
-
-        this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
-        GetIconSource(this.SelectedWeatherItem);
-        GetDayPeriod(this.SelectedWeatherItem);
     }
-
+    
     private async Task UpdateWeatherNDayItemsList()
     {
         WeatherItemService service = new WeatherItemService();

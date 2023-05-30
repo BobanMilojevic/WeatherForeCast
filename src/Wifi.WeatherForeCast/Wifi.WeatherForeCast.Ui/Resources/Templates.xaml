@@ -7,7 +7,9 @@
                 <Image Source="{Binding SymbolCode}"
                        Style="{StaticResource imgListItem}"/>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding DateTime.Date}"
+                    <Label Content="{Binding DateTime.Date, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource Title}"/>
+                    <Label Content="{Binding Temperature, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource Title}"/>
                 </StackPanel>
             </StackPanel>
