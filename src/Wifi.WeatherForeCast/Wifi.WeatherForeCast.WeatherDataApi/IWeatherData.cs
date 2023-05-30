@@ -8,7 +8,7 @@ namespace Wifi.WeatherForeCast.WeatherDataApi
         double Longitude { get; set; }
 
         IQueryable<WeatherItem> GetAllDataAtHourOfDayForTheNext_n_Days(int hourOfDay, int n_Days);
-        IQueryable<WeatherItem> GetAllDataForRemainingDay();
+        Task<IQueryable<WeatherItem>> GetAllDataForRemainingDay();
         Task RefreshData();
         Task RefreshDataWithNewLocation(double latitude, double longitude);
     }

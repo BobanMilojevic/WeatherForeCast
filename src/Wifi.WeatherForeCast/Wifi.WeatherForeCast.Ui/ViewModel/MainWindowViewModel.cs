@@ -108,19 +108,8 @@ public class MainWindowViewModel : ObservableValidator
 
         foreach (var item in items)
         {
-            if (item.DateTime.Hour == 6)
-            {
-                this.WeatherRemainingDayItemsList.Add(item);
-            }
-            if (item.DateTime.Hour == 12)
-            {
-                this.WeatherRemainingDayItemsList.Add(item);
-            }
-            if (item.DateTime.Hour == 18)
-            {
-                this.WeatherRemainingDayItemsList.Add(item);
-            }
-            if (item.DateTime.Hour == 23)
+            if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
+                item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
             {
                 this.WeatherRemainingDayItemsList.Add(item);
             }

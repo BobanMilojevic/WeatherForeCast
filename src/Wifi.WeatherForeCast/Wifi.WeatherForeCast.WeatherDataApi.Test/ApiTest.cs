@@ -29,7 +29,7 @@ namespace Wifi.WeatherForeCast.WeatherDataApi.Test
 
             weatherData.RefreshDataWithNewLocation(47.37198, 9.8704902);
 
-            todaysWeatherItemsList = weatherData.GetAllDataForRemainingDay().ToList();
+            //todaysWeatherItemsList = weatherData.GetAllDataForRemainingDay();
 
             weatherItemslist = weatherData.GetAllDataAtHourOfDayForTheNext_n_Days(12, 5).ToList();
 

@@ -8,10 +8,22 @@ namespace Wifi.WeatherForeCast.WeatherDataApi
 {
     public class WeatherData : IWeatherData
     {
-
+        private double _latitude;
+        private double _longitude;
+        
         private Root OriginalWeatherData { get; set; }
-        public double Latitude { get; set; } = 47.3670017;
-        public double Longitude { get; set; } = 9.6881199;
+
+        public double Latitude
+        {
+            get => _latitude; 
+            set => _latitude = value;
+        }
+
+        public double Longitude
+        {
+            get => _longitude; 
+            set => _longitude = value;
+        }
 
         /// <summary>
         /// Konstruktor ruft sofort die Daten für den übergebenen Standort ab.
@@ -20,14 +32,17 @@ namespace Wifi.WeatherForeCast.WeatherDataApi
         /// <param name="longitude"></param>
         public WeatherData(double latitude, double longitude)
         {
-            this.Latitude = latitude;
-            this.Longitude = longitude;
+            _latitude = latitude;
+            _longitude = longitude;
 
-            this.OriginalWeatherData = new();
-            this.OriginalWeatherData = Task.Run(async () => await FetchData(latitude, longitude)).Result;
+            LoadAsync();
         }
 
-
+        private async Task LoadAsync()
+        {
+            this.OriginalWeatherData = new();
+            this.OriginalWeatherData = Task.Run(async () => await FetchData(_latitude, _longitude)).Result;
+        }
 
 
         /// <summary>
@@ -78,7 +93,7 @@ namespace Wifi.WeatherForeCast.WeatherDataApi
         /// Get Weather informations for the rest of the current day
         /// </summary>
         /// <returns></returns>
-        public IQueryable<WeatherItem> GetAllDataForRemainingDay()
+        public async Task<IQueryable<WeatherItem>> GetAllDataForRemainingDay()
         {
             List<Timeseries> data = new List<Timeseries>();
             data = OriginalWeatherData.properties.timeseries.Where(x => x.time.Date == DateTime.Now.Date).ToList();

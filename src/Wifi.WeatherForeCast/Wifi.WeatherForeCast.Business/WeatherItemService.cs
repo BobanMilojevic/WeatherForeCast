@@ -14,6 +14,6 @@ public class WeatherItemService
 
     public async Task<IQueryable<WeatherItem>> GetWeatherDataOfRemainingDay()
     {
-        return _weatherData.GetAllDataForRemainingDay();
+        return await _weatherData.GetAllDataForRemainingDay();
     }
 }
