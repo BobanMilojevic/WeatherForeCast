@@ -18,6 +18,7 @@ public class MainWindowViewModel : ObservableValidator
     private string _iconSource;
     private WeatherItem _selectedWeatherItem;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
+    private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
 
     public MainWindowViewModel()
     {
@@ -97,6 +98,15 @@ public class MainWindowViewModel : ObservableValidator
         }
     }
     
+    public ObservableCollection<WeatherItem> WeatherNDayItemsList
+    {
+        get => _weatherNDaysItemsList; 
+        set
+        {
+            SetProperty(ref _weatherNDaysItemsList, value);
+        }
+    }
+    
     public IAsyncRelayCommand NextWeatherItemCommand { get; }
     public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
     
@@ -104,8 +114,23 @@ public class MainWindowViewModel : ObservableValidator
     {
         WeatherItemService service = new WeatherItemService();
         this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
-        var items = await service.GetWeatherDataOfRemainingDay();
+        this.WeatherNDayItemsList = new ObservableCollection<WeatherItem>();
 
+        var items = await service.GetWeatherDataOfNDays();
+
+        foreach (var item in items)
+        {
+            this.WeatherNDayItemsList.Add(item);
+        }
+
+        foreach (var item in this.WeatherNDayItemsList)
+        {
+            string symbolCode = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";
+            item.SymbolCode = symbolCode;
+        }
+        
+        items = await service.GetWeatherDataOfRemainingDay();
+       
         foreach (var item in items)
         {
             if (item.DateTime.Hour == DateTime.Now.Hour)

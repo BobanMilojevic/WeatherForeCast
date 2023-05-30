@@ -4,12 +4,11 @@
     <DataTemplate x:Key="templCollectionItemListItem">
         <Border>
             <StackPanel Orientation="Horizontal">
-                <Image Source="pack://siteoforigin:,,,/Resources/itemSave.png"
+                <Image Source="{Binding SymbolCode}"
                        Style="{StaticResource imgListItem}"/>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding Name}"
+                    <Label Content="{Binding DateTime.Date}"
                            Style="{StaticResource Title}"/>
-                    <Label Content="{Binding Number}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
