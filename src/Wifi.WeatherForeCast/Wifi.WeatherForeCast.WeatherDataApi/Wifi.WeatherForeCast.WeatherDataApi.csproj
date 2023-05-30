@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Wifi.WeatherForeCast.YrApi</RootNamespace>
+    <RootNamespace>Wifi.WeatherForeCast.WeatherDataApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wifi.WeatherForeCast.Geodat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wifi.WeatherForeCast.Model", "Wifi.WeatherForeCast.Model\Wifi.WeatherForeCast.Model.csproj", "{A7C70A7A-2A18-423D-8E1F-C5D6BD36EFF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifi.WeatherForeCast.YrApi.Test", "Wifi.WeatherForeCast.YrApi.Test\Wifi.WeatherForeCast.YrApi.Test.csproj", "{4081550F-0EAD-4C8A-8041-BD149625DEF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wifi.WeatherForeCast.Business", "Wifi.WeatherForeCast.Business\Wifi.WeatherForeCast.Business.csproj", "{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifi.WeatherForeCast.Business", "Wifi.WeatherForeCast.Business\Wifi.WeatherForeCast.Business.csproj", "{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wifi.WeatherForeCast.WeatherDataApi.Test", "Wifi.WeatherForeCast.WeatherDataApi.Test\Wifi.WeatherForeCast.WeatherDataApi.Test.csproj", "{08FB202F-CCA8-498D-8D2A-598624E3BF89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{A7C70A7A-2A18-423D-8E1F-C5D6BD36EFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7C70A7A-2A18-423D-8E1F-C5D6BD36EFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7C70A7A-2A18-423D-8E1F-C5D6BD36EFF0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4081550F-0EAD-4C8A-8041-BD149625DEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4081550F-0EAD-4C8A-8041-BD149625DEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4081550F-0EAD-4C8A-8041-BD149625DEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4081550F-0EAD-4C8A-8041-BD149625DEF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17F8D6B5-3899-4BD7-9249-C4F3FB366EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FB202F-CCA8-498D-8D2A-598624E3BF89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FB202F-CCA8-498D-8D2A-598624E3BF89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FB202F-CCA8-498D-8D2A-598624E3BF89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FB202F-CCA8-498D-8D2A-598624E3BF89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
