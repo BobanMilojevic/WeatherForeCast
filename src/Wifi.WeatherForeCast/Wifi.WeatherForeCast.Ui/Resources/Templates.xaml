@@ -8,6 +8,7 @@
                        Style="{StaticResource imgListItem}"/>
                 <StackPanel Orientation="Vertical">
                     <Label Content="{Binding DateTime.Date, UpdateSourceTrigger=PropertyChanged}"
+                           ContentStringFormat="dd.MM.yyyy"
                            Style="{StaticResource Title}"/>
                     <Label Content="{Binding Temperature, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource Title}"/>

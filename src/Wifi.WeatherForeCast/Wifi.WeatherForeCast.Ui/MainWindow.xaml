@@ -4,11 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Wifi.WeatherForeCast.Ui.ViewModel"
+        xmlns:model="clr-namespace:Wifi.WeatherForeCast.Model;assembly=Wifi.WeatherForeCast.Model"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="800"
         Width="450"
         WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <model:TemperatureConverter x:Key="TempConverter"/>
+    </Window.Resources>
     
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -56,7 +61,14 @@
                 
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Temperature:"/>
-                    <Label Content="{Binding SelectedWeatherItem.Temperature, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label>
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource TempConverter}">
+                                <Binding Path="SelectedWeatherItem.Temperature"/>
+                                <Binding Path="DataContext.IsDegree" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
                     <Label Content="°C"/>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -114,7 +126,7 @@
 
                 <RadioButton Content="°C"
                              Margin="5, 0, 5, 0"
-                             IsChecked="True"
+                             IsChecked="{Binding IsDegree}"
                              Width="30"/>
 
                 <RadioButton Content="°F"

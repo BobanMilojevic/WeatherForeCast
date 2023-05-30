@@ -18,12 +18,15 @@ public class MainWindowViewModel : ObservableValidator
     private string _iconSource;
     private int[] _numberOfDays;
     private int _selectedNumberOfDays;
+    private bool _isDegree;
     private WeatherItem _selectedWeatherItem;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
 
     public MainWindowViewModel()
     {
+        this.IsDegree = true;
+        
         LoadDataAsync();
 
         NextWeatherItemCommand = new AsyncRelayCommand(NextWeatherItem);
@@ -125,6 +128,15 @@ public class MainWindowViewModel : ObservableValidator
         {
             SetProperty(ref _selectedNumberOfDays, value);
             UpdateWeatherNDayItemsList();
+        }
+    }
+
+    public bool IsDegree
+    {
+        get => _isDegree;
+        set
+        {
+            SetProperty(ref _isDegree, value);
         }
     }
     
