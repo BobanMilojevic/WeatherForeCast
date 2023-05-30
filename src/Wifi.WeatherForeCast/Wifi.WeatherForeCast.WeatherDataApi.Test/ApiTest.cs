@@ -23,13 +23,15 @@ namespace Wifi.WeatherForeCast.WeatherDataApi.Test
 
 
         [Test]
-        public void Test()
+        public async Task Test()
         {
             weatherData.RefreshData();
 
             weatherData.RefreshDataWithNewLocation(47.37198, 9.8704902);
 
-            //todaysWeatherItemsList = weatherData.GetAllDataForRemainingDay();
+            var todaysWeatherItemsListxyz = await weatherData.GetAllDataForRemainingDay();
+
+            todaysWeatherItemsList = todaysWeatherItemsListxyz.ToList();
 
             weatherItemslist = weatherData.GetAllDataAtHourOfDayForTheNext_n_Days(12, 5).ToList();
 
