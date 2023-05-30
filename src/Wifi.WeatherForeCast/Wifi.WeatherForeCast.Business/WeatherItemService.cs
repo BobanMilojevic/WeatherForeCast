@@ -9,11 +9,11 @@ public class WeatherItemService
 
     public WeatherItemService()
     {
-        _weatherData = new WeatherData();
+        _weatherData = new WeatherData(47.23306, 9.6);
     }
 
-    public async Task<List<WeatherItem>> GetWeatherDataOfRemainingDay()
+    public async Task<IQueryable<WeatherItem>> GetWeatherDataOfRemainingDay()
     {
-        return await _weatherData.GetAllDataForRemainingDay(47.23306, 9.6);
+        return _weatherData.GetAllDataForRemainingDay();
     }
 }
