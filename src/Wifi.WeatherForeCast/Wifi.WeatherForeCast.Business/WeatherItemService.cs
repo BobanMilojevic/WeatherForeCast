@@ -9,16 +9,18 @@ public class WeatherItemService
 
     public WeatherItemService()
     {
-        _IWeatherData = new WeatherData(47.23306, 9.6);
+        
     }
 
-    public async Task<IQueryable<WeatherItem>> GetWeatherDataOfRemainingDay()
+    public async Task<IQueryable<WeatherItem>> GetWeatherDataOfRemainingDay(double latitude, double longitude)
     {
+        _IWeatherData = new WeatherData(latitude, longitude);
         return await _IWeatherData.GetAllDataForRemainingDay();
     }
 
-    public async Task<IQueryable<WeatherItem>> GetWeatherDataOfNDays()
+    public async Task<IQueryable<WeatherItem>> GetWeatherDataOfNDays(double latitude, double longitude)
     {
+        _IWeatherData = new WeatherData(latitude, longitude);
         return _IWeatherData.GetAllDataAtHourOfDayForTheNext_n_Days(12, 8);
     }
 }

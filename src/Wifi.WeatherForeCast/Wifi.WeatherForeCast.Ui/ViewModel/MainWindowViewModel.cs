@@ -20,13 +20,90 @@ public class MainWindowViewModel : ObservableValidator
     private int _selectedNumberOfDays;
     private bool _isDegree;
     private string _temperatureStringFormat;
+    private string _searchItem;
+    private bool _searchValueDropDown;
+    private string _selectedSearchSearchItem;
     private WeatherItem _selectedWeatherItem;
+    private Coordinate _selectedCoordinateItem;
+    private ObservableCollection<string> _cityItemsList;
+    private IQueryable<Coordinate> _coordinatesItemsList;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
+
+    public string SelectedSearchItem 
+    {
+        get => _selectedSearchSearchItem;
+        set
+        {
+            SetProperty(ref _selectedSearchSearchItem, value);
+            SetSelectedCoordinateItem();
+            UpdateWeatherNDayItemsList();
+            UpdateWeatherRemainingDayItemsList();
+        }
+    }
+
+    private void SetSelectedCoordinateItem()
+    {
+        foreach (var item in _coordinatesItemsList)
+        {
+            if (item.City == SelectedSearchItem)
+                _selectedCoordinateItem = item;
+        }
+    }
+
+    public bool SearchValueDropDown 
+    {
+        get => _searchValueDropDown;
+        set
+        {
+            SetProperty(ref _searchValueDropDown, value);
+        }
+    }
+    
+    public string SearchItem 
+    {
+        get => _searchItem;
+        set
+        {
+            SetProperty(ref _searchItem, value);
+            UpdateCityItemsList();
+        }
+    }
+
+    private async Task UpdateCityItemsList()
+    {
+        if (SearchItem.Length >= 1)
+        {
+            this.SearchValueDropDown = true;
+            
+            this.CityItemsList.Clear();
+
+            GeoDataService service = new GeoDataService();
+
+            _coordinatesItemsList = await service.GetCoordinates(SearchItem);
+
+            foreach (var item in _coordinatesItemsList)
+            {
+                CityItemsList.Add(item.City);
+            }
+        }
+    }
+
+    public ObservableCollection<string> CityItemsList 
+    {
+        get => _cityItemsList;
+        set
+        {
+            SetProperty(ref _cityItemsList, value);
+        }
+    }
 
     public MainWindowViewModel()
     {
         this.IsDegree = true;
+
+        CityItemsList = new ObservableCollection<string>();
+        this.SearchValueDropDown = false;
 
         LoadDataAsync();
 
@@ -160,24 +237,31 @@ public class MainWindowViewModel : ObservableValidator
         this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
         this.WeatherNDayItemsList = new ObservableCollection<WeatherItem>();
 
+        SelectedWeatherItem = new WeatherItem()
+        {
+            DateTime = DateTime.Now,
+            Humidity = 0,
+            PerceivedTemperature = 0,
+            Pressure = 0,
+            SymbolCode = "",
+            Temperature = 0,
+            WindSpeed = 0
+        };
+        
         _numberOfDays = new int[] { 1, 2, 3, 4, 5, 6, 7 };
         this.SelectedNumberOfDays = 0;
-
-        UpdateWeatherNDayItemsList();
-        UpdateWeatherRemainingDayItemsList();
-
-        this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
-        GetIconSource(this.SelectedWeatherItem);
-        GetDayPeriod(this.SelectedWeatherItem);
     }
 
     private async Task UpdateWeatherRemainingDayItemsList()
     {
+        if (_selectedCoordinateItem == null)
+            return;
+        
         WeatherItemService service = new WeatherItemService();
         
         this.WeatherRemainingDayItemsList.Clear();
         
-        var items = await service.GetWeatherDataOfRemainingDay();
+        var items = await service.GetWeatherDataOfRemainingDay(_selectedCoordinateItem.Latitude, _selectedCoordinateItem.Longitude);
         
         foreach (var item in items)
         {
@@ -195,15 +279,22 @@ public class MainWindowViewModel : ObservableValidator
                 this.WeatherRemainingDayItemsList.Add(item);
             }
         }
+        
+        this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
+        GetIconSource(this.SelectedWeatherItem);
+        GetDayPeriod(this.SelectedWeatherItem);
     }
     
     private async Task UpdateWeatherNDayItemsList()
     {
+        if (_selectedCoordinateItem == null)
+            return;
+        
         WeatherItemService service = new WeatherItemService();
         
         this.WeatherNDayItemsList.Clear();
         
-        var items = await service.GetWeatherDataOfNDays();
+        var items = await service.GetWeatherDataOfNDays(_selectedCoordinateItem.Latitude, _selectedCoordinateItem.Longitude);
 
         int index = 0;
         foreach (var item in items)
@@ -229,21 +320,24 @@ public class MainWindowViewModel : ObservableValidator
         {
             this.DayPeriod = "Jetzt";
         }
-        if (item.DateTime.Hour == 6)
+        else
         {
-            this.DayPeriod = "Vormittag";
-        }
-        if (item.DateTime.Hour == 12)
-        {
-            this.DayPeriod = "Nachmittag";
-        }
-        if (item.DateTime.Hour == 18)
-        {
-            this.DayPeriod = "Abend";
-        }
-        if (item.DateTime.Hour == 23)
-        {
-            this.DayPeriod = "Nacht";
+            if (item.DateTime.Hour == 6)
+            {
+                this.DayPeriod = "Vormittag";
+            }
+            if (item.DateTime.Hour == 12)
+            {
+                this.DayPeriod = "Nachmittag";
+            }
+            if (item.DateTime.Hour == 18)
+            {
+                this.DayPeriod = "Abend";
+            }
+            if (item.DateTime.Hour == 23)
+            {
+                this.DayPeriod = "Nacht";
+            }
         }
     }
     

@@ -29,10 +29,18 @@
         <DockPanel Grid.Row="0"
                    LastChildFill="True">
             
-            <TextBox DockPanel.Dock="Top" 
+            <ComboBox DockPanel.Dock="Top" 
                      Margin="5"
                      FontSize="20"
-                     Text="{Binding SearchValue}"/>
+                     Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding SelectedSearchItem, UpdateSourceTrigger=PropertyChanged}"
+                     ItemsSource="{Binding CityItemsList, UpdateSourceTrigger=PropertyChanged}"
+                     IsTextSearchEnabled="True"
+                     IsEditable="True"
+                     IsSynchronizedWithCurrentItem="True"
+                     StaysOpenOnEdit="True"
+                     IsDropDownOpen="{Binding SearchValueDropDown}">
+            </ComboBox>
         </DockPanel>
 
         <Grid Grid.Row="1"

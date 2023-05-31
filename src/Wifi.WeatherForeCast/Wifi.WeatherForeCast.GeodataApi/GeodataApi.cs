@@ -33,8 +33,8 @@ namespace Wifi.WeatherForeCast.Geodata
                 coordinates.Add(new Coordinate()
                 {
                     City = item.display_name,
-                    Latitude = Convert.ToDouble(item.lat),
-                    Longitude = Convert.ToDouble(item.lon)
+                    Latitude = item.lat,
+                    Longitude = item.lon
                 });
             }
 
