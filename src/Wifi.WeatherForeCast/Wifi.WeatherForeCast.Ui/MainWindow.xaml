@@ -5,11 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Wifi.WeatherForeCast.Ui.ViewModel"
         xmlns:model="clr-namespace:Wifi.WeatherForeCast.Model;assembly=Wifi.WeatherForeCast.Model"
+        xmlns:behav="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="800"
         Width="450"
         WindowStartupLocation="CenterScreen">
+    
+    <behav:Interaction.Triggers>
+        <behav:EventTrigger EventName="Closing">
+            <behav:InvokeCommandAction Command="{Binding SaveDataCommand}"/>
+        </behav:EventTrigger>
+    </behav:Interaction.Triggers>
     
     <Window.Resources>
         <model:TemperatureConverter x:Key="TempConverter"/>
@@ -58,6 +65,9 @@
             <DockPanel Grid.Row="0"
                        Grid.Column="1">
 
+                <Label DockPanel.Dock="Top"
+                       Content="{Binding City, UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" 
                        Content="{Binding DayPeriod, UpdateSourceTrigger=PropertyChanged}" 
                        HorizontalAlignment="Center"/>

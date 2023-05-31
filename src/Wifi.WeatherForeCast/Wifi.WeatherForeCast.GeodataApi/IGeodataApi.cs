@@ -4,6 +4,6 @@ namespace Wifi.WeatherForeCast.Geodata
 {
     public interface IGeodataApi
     {
-        Task<IQueryable<Coordinate>> GetCoordinates(string city);
+        Task<IQueryable<Coordinate>> GetCoordinates(string city, CancellationToken cancellationToken);
     }
 }

@@ -12,8 +12,8 @@ public class GeoDataService
         _IGeodataApi = new GeodataApi();
     }
 
-    public async Task<IQueryable<Coordinate>> GetCoordinates(string city)
+    public async Task<IQueryable<Coordinate>> GetCoordinates(string city, CancellationToken cancellationToken)
     {
-        return await _IGeodataApi.GetCoordinates(city);
+        return await _IGeodataApi.GetCoordinates(city, cancellationToken);
     }
 }

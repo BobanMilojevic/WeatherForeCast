@@ -10,7 +10,7 @@ namespace Wifi.WeatherForeCast.Repositories
         {
             if (settings == null) { return; }
 
-            string fileName = "c:\\temp\\WeatherForecastSettings.json";
+            string fileName = "WeatherForecastSettings.json";
                 
             string json = JsonConvert.SerializeObject(settings);
 
@@ -20,7 +20,7 @@ namespace Wifi.WeatherForeCast.Repositories
 
         public UiSettings LoadSettings()
         {
-            string fileName = "c:\\temp\\WeatherForecastSettings.json";
+            string fileName = "WeatherForecastSettings.json";
             string json = File.ReadAllText(fileName);
 
             if (string.IsNullOrEmpty(json)) { return null; }

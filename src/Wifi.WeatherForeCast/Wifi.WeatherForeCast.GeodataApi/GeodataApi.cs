@@ -9,7 +9,7 @@ namespace Wifi.WeatherForeCast.Geodata
     public class GeodataApi : IGeodataApi
     {
       
-        public async Task<IQueryable<Coordinate>> GetCoordinates(string city)
+        public async Task<IQueryable<Coordinate>> GetCoordinates(string city, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(city))
             {
@@ -17,7 +17,7 @@ namespace Wifi.WeatherForeCast.Geodata
             }
 
             string query = String.Format("https://nominatim.openstreetmap.org/search?city={0}&format=jsonv2", city);
-            string result = await GetRequest(query); //returns a stringified array of js objects
+            string result = await GetRequest(query, cancellationToken); //returns a stringified array of js objects
 
             var list = JsonConvert.DeserializeObject<List<GeoDataApiJsonModel>>(result);
 
@@ -42,7 +42,7 @@ namespace Wifi.WeatherForeCast.Geodata
 
         }
 
-        private async Task<string> GetRequest(string url)
+        private async Task<string> GetRequest(string url, CancellationToken cancellationToken)
         {
             HttpClient client = new HttpClient();
             //client.BaseAddress = new Uri(requestString);
@@ -52,22 +52,8 @@ namespace Wifi.WeatherForeCast.Geodata
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = await client.GetAsync(url);
+            HttpResponseMessage response = await client.GetAsync(url, cancellationToken);
             return await response.Content.ReadAsStringAsync();
-
-            // Root wetterdaten = JsonConvert.DeserializeObject<Root>(jsonString);
-            //
-            // return wetterdaten;
-            //
-            // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            // request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
-            // using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            // using (Stream stream = response.GetResponseStream())
-            // using (StreamReader reader = new StreamReader(stream))
-            // {
-            //     return reader.ReadToEnd();
-            // }
         }
     }
 }
