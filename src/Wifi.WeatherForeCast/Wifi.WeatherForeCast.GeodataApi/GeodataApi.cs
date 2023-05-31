@@ -1,89 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using Wifi.WeatherForeCast.Geodata.Interfaces;
+using Wifi.WeatherForeCast.Geodata.HelperJsonObject;
 using Wifi.WeatherForeCast.Model;
 
-namespace Wifi.WeatherForeCast.Geodata.Apis
+namespace Wifi.WeatherForeCast.Geodata
 {
     public class GeodataApi : IGeodataApi
     {
-        public Coordinates MainApiForBoban(string city)
+      
+        public async Task<IQueryable<Coordinate>> GetCoordinates(string city)
         {
             if (string.IsNullOrWhiteSpace(city))
             {
-                return GetEmptyCityCoordinates();
+                return null;
             }
 
-            return GetCoordinates(city);
-        }
+            string query = String.Format("https://nominatim.openstreetmap.org/search?city={0}&format=jsonv2", city);
+            string result = await GetRequest(query); //returns a stringified array of js objects
 
-        public Coordinates GetEmptyCityCoordinates()
-        {
-            var coord = new Coordinates();
-            coord.IsValid = false;
-            coord.Latitude = 0;
-            coord.Longitude = 0;
-            return coord;
-        }
+            var list = JsonConvert.DeserializeObject<List<GeoDataApiJsonModel>>(result);
 
-        public Coordinates GetCoordinates(string city)
-        {
-            string query = String.Format("https://nominatim.openstreetmap.org/search.php?q={0}&format=jsonv2", city);
-            string result = GetRequest(query); //returns a stringified array of js objects
-
-            var list = JsonConvert.DeserializeObject<List<Place>>(result);
-
-            if (list == null || list.Count == 0)
+            if (list == null)
             {
-                return GetEmptyCityCoordinates();
+                return null;
             }
-
-            var place = list.FirstOrDefault();
-
-            if (place == null)
+            
+            List<Coordinate> coordinates = new List<Coordinate>();
+            
+            foreach (var item in list)
             {
-                return GetEmptyCityCoordinates(); 
+                coordinates.Add(new Coordinate()
+                {
+                    City = item.display_name,
+                    Latitude = Convert.ToDouble(item.lat),
+                    Longitude = Convert.ToDouble(item.lon)
+                });
             }
 
-            var coordinates = GetCoordinatesFromPlace(place);
-
-            return coordinates;
+            return coordinates.AsQueryable();
 
         }
 
-        public string GetRequest(string url)
+        private async Task<string> GetRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
+            HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri(requestString);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue("PostmanRuntime", "7.32.2"));
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            return await response.Content.ReadAsStringAsync();
+
+            // Root wetterdaten = JsonConvert.DeserializeObject<Root>(jsonString);
+            //
+            // return wetterdaten;
+            //
+            // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            // request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
+            // using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            // using (Stream stream = response.GetResponseStream())
+            // using (StreamReader reader = new StreamReader(stream))
+            // {
+            //     return reader.ReadToEnd();
+            // }
         }
-
-        public Coordinates GetCoordinatesFromPlace(Place place)
-        {
-            var coord = new Coordinates();
-
-            //wenn hier ein error auftritt einfach die umwandlung herausnehmen ( . zu ,)
-            var longitude = place.lon.Replace(".", ",");
-            var latitude = place.lat.Replace(".", ",");
-
-            coord.Longitude = Convert.ToDouble(longitude);
-            coord.Latitude = Convert.ToDouble(latitude);
-            coord.IsValid = true;
-
-            return coord;
-        }
-
-        
     }
 }

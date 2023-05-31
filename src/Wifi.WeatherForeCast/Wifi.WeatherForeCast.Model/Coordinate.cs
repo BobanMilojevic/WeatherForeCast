@@ -1,8 +1,8 @@
 ﻿namespace Wifi.WeatherForeCast.Model
 {
-    public class Coordinates
+    public class Coordinate
     {
-        public bool IsValid { get; set; }
+        public string City { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
     
