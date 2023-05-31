@@ -4,21 +4,23 @@ using Wifi.WeatherForeCast.Model;
 
 namespace Wifi.WeatherForeCast.Repositories
 {
-    public class JsonRepository
+    public class JsonRepository : IJsonRepository
     {
-        public void SaveSettings(UiSettings settings, string fileName = "c:\\temp\\WeatherForecastSettings.json")
+        public void SaveSettings(UiSettings settings)
         {
+            if (settings == null) { return; }
 
-            if (settings == null || string.IsNullOrEmpty(fileName)) { return; }
-
+            string fileName = "c:\\temp\\WeatherForecastSettings.json";
+                
             string json = JsonConvert.SerializeObject(settings);
 
             File.WriteAllText(fileName, json);
         }
 
 
-        public UiSettings LoadSettings(string fileName = "c:\\temp\\WeatherForecastSettings.json")
+        public UiSettings LoadSettings()
         {
+            string fileName = "c:\\temp\\WeatherForecastSettings.json";
             string json = File.ReadAllText(fileName);
 
             if (string.IsNullOrEmpty(json)) { return null; }
@@ -27,8 +29,5 @@ namespace Wifi.WeatherForeCast.Repositories
             settings = JsonConvert.DeserializeObject<UiSettings>(json);
             return settings;
         }
-
-
-
     }
 }

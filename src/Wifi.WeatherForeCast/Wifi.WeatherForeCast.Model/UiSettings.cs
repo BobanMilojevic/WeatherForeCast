@@ -13,14 +13,5 @@ namespace Wifi.WeatherForeCast.Model
         public int ForecastDays { get; set; }
         public string Language { get; set; }
 
-        public UiSettings() { }
-
-        public UiSettings(bool isDegree, string location, int forecastDays, string language)
-        {
-            IsDegree = isDegree;
-            Location = location;
-            ForecastDays = forecastDays;
-            Language = language;
-        }
     }
 }
