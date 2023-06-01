@@ -16,7 +16,7 @@ namespace Wifi.WeatherForeCast.Geodata
                 return null;
             }
 
-            string query = String.Format("https://nominatim.openstreetmap.org/search?city={0}&format=jsonv2", city);
+            string query = String.Format("https://nominatim.openstreetmap.org/search?city={0}&format=jsonv2", city.Replace(" ", "%20"));
             string result = await GetRequest(query, cancellationToken); //returns a stringified array of js objects
 
             var list = JsonConvert.DeserializeObject<List<GeoDataApiJsonModel>>(result);
@@ -40,6 +40,21 @@ namespace Wifi.WeatherForeCast.Geodata
 
             return coordinates.AsQueryable();
 
+        }
+
+        public async Task<string> GetCity(double longitude, double latitude, CancellationToken cancellationToken)
+        {
+            string query = String.Format("https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=jsonv2", latitude.ToString().Replace(",", "."), longitude.ToString().Replace(",", "."));
+            string result = await GetRequest(query, cancellationToken); //returns a stringified array of js objects
+
+            var coordinateJsonModel = JsonConvert.DeserializeObject<GeoDataApiJsonModel>(result);
+
+            if (coordinateJsonModel == null)
+            {
+                return null;
+            }
+
+            return coordinateJsonModel.display_name;
         }
 
         private async Task<string> GetRequest(string url, CancellationToken cancellationToken)

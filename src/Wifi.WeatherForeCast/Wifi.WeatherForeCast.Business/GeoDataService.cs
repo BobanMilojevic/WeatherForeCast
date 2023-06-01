@@ -16,4 +16,9 @@ public class GeoDataService
     {
         return await _IGeodataApi.GetCoordinates(city, cancellationToken);
     }
+
+    public async Task<string> GetCity(double longitude, double latitude, CancellationToken cancellationToken)
+    {
+        return await _IGeodataApi.GetCity(longitude, latitude, cancellationToken);
+    }
 }
