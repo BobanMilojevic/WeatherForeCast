@@ -21,6 +21,12 @@ namespace Wifi.WeatherForeCast.Repositories
         public UiSettings LoadSettings()
         {
             string fileName = "WeatherForecastSettings.json";
+
+            if (!File.Exists(fileName))
+            {
+                return null;
+            }
+            
             string json = File.ReadAllText(fileName);
 
             if (string.IsNullOrEmpty(json)) { return null; }

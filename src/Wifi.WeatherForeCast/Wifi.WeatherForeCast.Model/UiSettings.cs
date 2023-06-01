@@ -12,6 +12,7 @@ namespace Wifi.WeatherForeCast.Model
         public string Location { get; set; }
         public int ForecastDays { get; set; }
         public string Language { get; set; }
-
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
     }
 }

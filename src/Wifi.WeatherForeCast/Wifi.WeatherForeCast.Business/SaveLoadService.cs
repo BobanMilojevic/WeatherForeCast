@@ -3,11 +3,11 @@ using Wifi.WeatherForeCast.Repositories;
 
 namespace Wifi.WeatherForeCast.Business;
 
-public class SaveService
+public class SaveLoadService
 {
     private IJsonRepository _IJsonRepository;
 
-    public SaveService()
+    public SaveLoadService()
     {
         _IJsonRepository = new JsonRepository();
     }
