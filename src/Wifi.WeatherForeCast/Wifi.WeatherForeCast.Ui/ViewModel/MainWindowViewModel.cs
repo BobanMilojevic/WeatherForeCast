@@ -359,7 +359,7 @@ public class MainWindowViewModel : ObservableValidator
     
     private void GetDayPeriod(WeatherItem item)
     {
-        if (item.DateTime.Hour == DateTime.Now.Hour)
+        if (item.DateTime.Hour == DateTime.Now.Hour && this.DayPeriod != "Jetzt")
         {
             this.DayPeriod = "Jetzt";
         }
