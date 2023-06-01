@@ -25,6 +25,7 @@ public class MainWindowViewModel : ObservableValidator
     private bool _searchValueDropDown;
     private string _selectedSearchSearchItem;
     private string _city;
+    private bool _isFahrenheit;
     private WeatherItem _selectedWeatherItem;
     private Coordinate _selectedCoordinateItem;
     private ObservableCollection<string> _cityItemsList;
@@ -84,8 +85,9 @@ public class MainWindowViewModel : ObservableValidator
 
             UpdateWeatherNDayItemsList();
             UpdateWeatherRemainingDayItemsList();
-
+            
             this.IsDegree = loadUiSettings.IsDegree;
+            this.IsFahrenheit = !this.IsDegree;
             this.SelectedNumberOfDays = loadUiSettings.ForecastDays;
         }
     }
@@ -107,6 +109,7 @@ public class MainWindowViewModel : ObservableValidator
         };
         
         _numberOfDays = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+        this.IsDegree = true;
         this.SelectedNumberOfDays = 0;
 
         LoadData();
@@ -135,6 +138,15 @@ public class MainWindowViewModel : ObservableValidator
     }
 
     // Properties
+    public bool IsFahrenheit
+    {
+        get => _isFahrenheit;
+        set
+        {
+            SetProperty(ref _isFahrenheit, value);
+        }
+    }
+    
     public Coordinate SelectedCoordinateItem 
     {
         get => _selectedCoordinateItem;

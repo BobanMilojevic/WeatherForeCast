@@ -156,7 +156,8 @@
 
                 <RadioButton Content="°F"
                              Margin="5, 0, 5, 0"
-                             Width="30"/>
+                             Width="30"
+                             IsChecked="{Binding IsFahrenheit, UpdateSourceTrigger=PropertyChanged}"/>
 
             </StackPanel>
             
