@@ -34,8 +34,6 @@ public class MainWindowViewModel : ObservableValidator
 
     public MainWindowViewModel()
     {
-        this.IsDegree = true;
-
         CityItemsList = new ObservableCollection<string>();
         this.SearchValueDropDown = false;
 
@@ -48,20 +46,48 @@ public class MainWindowViewModel : ObservableValidator
 
     private async Task SaveData()
     {
-        SaveService service = new SaveService();
+        if (this.SelectedCoordinateItem == null)
+        {
+            return;
+        }
+        
+        SaveLoadService loadService = new SaveLoadService();
 
         UiSettings uiSettings = new UiSettings()
         {
             ForecastDays = this.SelectedNumberOfDays,
             IsDegree = this.IsDegree,
             Language = "",
-            Location = City
+            Location = this.SelectedCoordinateItem.City,
+            Latitude = this.SelectedCoordinateItem.Latitude,
+            Longitude = this.SelectedCoordinateItem.Longitude
         };
         
-        service.SaveUiSetting(uiSettings);
+        loadService.SaveUiSetting(uiSettings);
     }
 
-    // Properties
+    private async Task LoadData()
+    {
+        SaveLoadService loadService = new SaveLoadService();
+        UiSettings loadUiSettings = loadService.LoadUiSettings();
+        
+        if (loadUiSettings != null)
+        {
+            this.SelectedCoordinateItem = new Coordinate()
+            {
+                City = loadUiSettings.Location,
+                Latitude = loadUiSettings.Latitude,
+                Longitude = loadUiSettings.Longitude
+            };
+
+            UpdateWeatherNDayItemsList();
+            UpdateWeatherRemainingDayItemsList();
+
+            this.IsDegree = loadUiSettings.IsDegree;
+            this.SelectedNumberOfDays = loadUiSettings.ForecastDays;
+        }
+    }
+
     private async Task LoadDataAsync()
     {
         this.WeatherRemainingDayItemsList = new ObservableCollection<WeatherItem>();
@@ -80,6 +106,8 @@ public class MainWindowViewModel : ObservableValidator
         
         _numberOfDays = new int[] { 1, 2, 3, 4, 5, 6, 7 };
         this.SelectedNumberOfDays = 0;
+
+        LoadData();
     }
 
     private async Task PreviousWeatherItem()
@@ -104,6 +132,16 @@ public class MainWindowViewModel : ObservableValidator
         }
     }
 
+    // Properties
+    public Coordinate SelectedCoordinateItem 
+    {
+        get => _selectedCoordinateItem;
+        set
+        {
+            SetProperty(ref _selectedCoordinateItem, value);
+        }
+    }
+    
     public string SearchValue
     {
         get => _searchValue;
@@ -252,18 +290,18 @@ public class MainWindowViewModel : ObservableValidator
     public IAsyncRelayCommand NextWeatherItemCommand { get; }
     public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
     public IAsyncRelayCommand SaveDataCommand { get; }
-    
+
     // private Methodes
     private async Task UpdateWeatherRemainingDayItemsList()
     {
-        if (_selectedCoordinateItem == null)
+        if (this.SelectedCoordinateItem == null)
             return;
         
         WeatherItemService service = new WeatherItemService();
         
         this.WeatherRemainingDayItemsList.Clear();
         
-        var items = await service.GetWeatherDataOfRemainingDay(_selectedCoordinateItem.Latitude, _selectedCoordinateItem.Longitude);
+        var items = await service.GetWeatherDataOfRemainingDay(this.SelectedCoordinateItem.Latitude, this.SelectedCoordinateItem.Longitude);
         
         foreach (var item in items)
         {
@@ -289,14 +327,14 @@ public class MainWindowViewModel : ObservableValidator
     
     private async Task UpdateWeatherNDayItemsList()
     {
-        if (_selectedCoordinateItem == null)
+        if (this.SelectedCoordinateItem == null)
             return;
         
         WeatherItemService service = new WeatherItemService();
         
         this.WeatherNDayItemsList.Clear();
         
-        var items = await service.GetWeatherDataOfNDays(_selectedCoordinateItem.Latitude, _selectedCoordinateItem.Longitude);
+        var items = await service.GetWeatherDataOfNDays(this.SelectedCoordinateItem.Latitude, this.SelectedCoordinateItem.Longitude);
 
         int index = 0;
         foreach (var item in items)
@@ -361,8 +399,7 @@ public class MainWindowViewModel : ObservableValidator
         {
             if (item.City == SelectedSearchItem)
             {
-                _selectedCoordinateItem = item;
-                this.City = _selectedCoordinateItem.City;
+                this.SelectedCoordinateItem = item;
             }
         }
     }

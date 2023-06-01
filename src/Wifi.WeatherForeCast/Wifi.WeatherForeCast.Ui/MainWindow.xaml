@@ -42,7 +42,7 @@
                      Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedSearchItem, UpdateSourceTrigger=PropertyChanged}"
                      ItemsSource="{Binding CityItemsList, UpdateSourceTrigger=PropertyChanged}"
-                     IsTextSearchEnabled="True"
+                     IsTextSearchEnabled="False"
                      IsEditable="True"
                      IsSynchronizedWithCurrentItem="True"
                      StaysOpenOnEdit="True"
@@ -66,7 +66,7 @@
                        Grid.Column="1">
 
                 <Label DockPanel.Dock="Top"
-                       Content="{Binding City, UpdateSourceTrigger=PropertyChanged}"
+                       Content="{Binding SelectedCoordinateItem.City, UpdateSourceTrigger=PropertyChanged}"
                        HorizontalAlignment="Center"/>
                 <Label DockPanel.Dock="Top" 
                        Content="{Binding DayPeriod, UpdateSourceTrigger=PropertyChanged}" 
@@ -149,7 +149,7 @@
 
                 <RadioButton Content="°C"
                              Margin="5, 0, 5, 0"
-                             IsChecked="{Binding IsDegree}"
+                             IsChecked="{Binding IsDegree, UpdateSourceTrigger=PropertyChanged}"
                              Width="30"/>
 
                 <RadioButton Content="°F"
