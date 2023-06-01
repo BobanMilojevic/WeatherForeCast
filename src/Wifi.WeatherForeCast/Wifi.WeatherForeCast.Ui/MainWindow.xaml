@@ -91,7 +91,7 @@
                     </Label>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label Content="Gefüllte Temp:"/>
+                    <Label Content="Gefühlte Temp:"/>
                     <Label ContentStringFormat="{Binding TemperatureFormatString}">
                         <Label.Content>
                             <MultiBinding Converter="{StaticResource TempConverter}">
