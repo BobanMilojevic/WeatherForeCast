@@ -31,9 +31,11 @@ public class MainWindowViewModel : ObservableValidator
     private IQueryable<Coordinate> _coordinatesItemsList;
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
+    private CancellationTokenSource _geoDataCancellationTokenSource;
 
     public MainWindowViewModel()
     {
+        _geoDataCancellationTokenSource = new CancellationTokenSource();
         CityItemsList = new ObservableCollection<string>();
         this.SearchValueDropDown = false;
 
@@ -264,6 +266,7 @@ public class MainWindowViewModel : ObservableValidator
         set
         {
             SetProperty(ref _searchItem, value);
+            _geoDataCancellationTokenSource.Cancel();
             UpdateCityItemsList();
         }
     }
@@ -406,6 +409,8 @@ public class MainWindowViewModel : ObservableValidator
     
     private async Task UpdateCityItemsList()
     {
+        _geoDataCancellationTokenSource = new CancellationTokenSource();
+        
         if (SearchItem.Length >= 1)
         {
             this.SearchValueDropDown = true;
@@ -414,7 +419,7 @@ public class MainWindowViewModel : ObservableValidator
 
             GeoDataService service = new GeoDataService();
 
-            _coordinatesItemsList = await service.GetCoordinates(SearchItem, new CancellationToken(false));
+            _coordinatesItemsList = await service.GetCoordinates(SearchItem, _geoDataCancellationTokenSource.Token);
 
             foreach (var item in _coordinatesItemsList)
             {

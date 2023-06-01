@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:Wifi.WeatherForeCast.Ui.ViewModel"
         xmlns:model="clr-namespace:Wifi.WeatherForeCast.Model;assembly=Wifi.WeatherForeCast.Model"
         xmlns:behav="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:cc="clr-namespace:Wifi.WeatherForeCast.Ui"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="800"
@@ -36,7 +37,7 @@
         <DockPanel Grid.Row="0"
                    LastChildFill="True">
             
-            <ComboBox DockPanel.Dock="Top" 
+            <cc:CustomComboBox DockPanel.Dock="Top" 
                      Margin="5"
                      FontSize="20"
                      Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}"
@@ -46,8 +47,9 @@
                      IsEditable="True"
                      IsSynchronizedWithCurrentItem="True"
                      StaysOpenOnEdit="True"
-                     IsDropDownOpen="{Binding SearchValueDropDown}">
-            </ComboBox>
+                     IsDropDownOpen="{Binding SearchValueDropDown}"
+                     >
+            </cc:CustomComboBox>
         </DockPanel>
 
         <Grid Grid.Row="1"
@@ -89,7 +91,7 @@
                     </Label>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label Content="Gefüllte Temp:"/>
+                    <Label Content="Gefühlte Temp:"/>
                     <Label ContentStringFormat="{Binding TemperatureFormatString}">
                         <Label.Content>
                             <MultiBinding Converter="{StaticResource TempConverter}">

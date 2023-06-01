@@ -19,6 +19,11 @@ namespace Wifi.WeatherForeCast.Geodata
             string query = String.Format("https://nominatim.openstreetmap.org/search?city={0}&format=jsonv2", city.Replace(" ", "%20"));
             string result = await GetRequest(query, cancellationToken); //returns a stringified array of js objects
 
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+            
             var list = JsonConvert.DeserializeObject<List<GeoDataApiJsonModel>>(result);
 
             if (list == null)
