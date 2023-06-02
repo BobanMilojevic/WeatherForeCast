@@ -432,10 +432,12 @@ public class MainWindowViewModel : ObservableValidator
             GeoDataService service = new GeoDataService();
 
             _coordinatesItemsList = await service.GetCoordinates(SearchItem, _geoDataCancellationTokenSource.Token);
-
-            foreach (var item in _coordinatesItemsList)
+            if (_coordinatesItemsList != null)
             {
-                CityItemsList.Add(item.City);
+                foreach (var item in _coordinatesItemsList)
+                {
+                    CityItemsList.Add(item.City);
+                }
             }
         }
     }
