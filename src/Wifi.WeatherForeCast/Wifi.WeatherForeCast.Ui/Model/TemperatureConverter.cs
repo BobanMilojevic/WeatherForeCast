@@ -1,7 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows.Data;
 
-namespace Wifi.WeatherForeCast.Model;
+namespace Wifi.WeatherForeCast.Ui.Model;
 
 public class TemperatureConverter : IMultiValueConverter
 {
@@ -22,7 +23,10 @@ public class TemperatureConverter : IMultiValueConverter
                 return temperature;
             }
         }
-        else return null;
+        else
+        {
+            return null;
+        }
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

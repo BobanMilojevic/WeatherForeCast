@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Wifi.WeatherForeCast.Ui.ViewModel"
-        xmlns:model="clr-namespace:Wifi.WeatherForeCast.Model;assembly=Wifi.WeatherForeCast.Model"
         xmlns:behav="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:cc="clr-namespace:Wifi.WeatherForeCast.Ui"
+        xmlns:model1="clr-namespace:Wifi.WeatherForeCast.Ui.Model"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="800"
@@ -20,7 +20,7 @@
     </behav:Interaction.Triggers>
     
     <Window.Resources>
-        <model:TemperatureConverter x:Key="TempConverter"/>
+        <model1:TemperatureConverter x:Key="TempConverter"/>
     </Window.Resources>
     
     <Window.DataContext>

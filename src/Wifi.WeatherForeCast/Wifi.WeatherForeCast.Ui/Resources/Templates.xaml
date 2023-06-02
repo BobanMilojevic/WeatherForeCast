@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:model="clr-namespace:Wifi.WeatherForeCast.Model;assembly=Wifi.WeatherForeCast.Model">
+                    xmlns:model1="clr-namespace:Wifi.WeatherForeCast.Ui.Model">
 
-    <model:TemperatureConverter x:Key="TempConverter"/>
+    <model1:TemperatureConverter x:Key="TempConverter"/>
     
     <DataTemplate x:Key="templCollectionItemListItem">
         <Border>
