@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +39,9 @@ public class MainWindowViewModel : ObservableValidator
 
     public MainWindowViewModel()
     {
-        this.SetLanguageDictionary();
+        string language = "de-DE";
+        language = "en-US";
+        this.SetLanguageDictionary(language);
         _geoDataCancellationTokenSource = new CancellationTokenSource();
         CityItemsList = new ObservableCollection<string>();
         this.SearchValueDropDown = false;
@@ -51,20 +54,29 @@ public class MainWindowViewModel : ObservableValidator
         
     }
 
-    private void SetLanguageDictionary()
+    private void SetLanguageDictionary(string manualLanguage = null)
     {
         _dict = new ResourceDictionary();
         ResourceDictionary dict = new ResourceDictionary();
-        switch (Thread.CurrentThread.CurrentCulture.ToString())
+        string language = null;
+        if (manualLanguage != null)
+        {
+            language = manualLanguage;
+        }
+        else
+        {
+            language = Thread.CurrentThread.CurrentCulture.ToString();
+        }
+        switch (language)
         {
             case "en-US":
                 dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.xaml", UriKind.Absolute);
                 break;
             case "de-DE":
-                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.de.xaml", UriKind.Relative);
+                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.de.xaml", UriKind.Absolute);
                 break;
             default:
-                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.xaml", UriKind.Relative);
+                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.xaml", UriKind.Absolute);
                 break;
         }
         _dict.MergedDictionaries.Add(dict);
