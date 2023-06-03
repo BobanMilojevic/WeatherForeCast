@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wifi.WeatherForeCast.Business;
@@ -33,9 +34,11 @@ public class MainWindowViewModel : ObservableValidator
     private ObservableCollection<WeatherItem> _weatherRemainingDayItemsList;
     private ObservableCollection<WeatherItem> _weatherNDaysItemsList;
     private CancellationTokenSource _geoDataCancellationTokenSource;
+    private ResourceDictionary _dict;
 
     public MainWindowViewModel()
     {
+        this.SetLanguageDictionary();
         _geoDataCancellationTokenSource = new CancellationTokenSource();
         CityItemsList = new ObservableCollection<string>();
         this.SearchValueDropDown = false;
@@ -45,7 +48,29 @@ public class MainWindowViewModel : ObservableValidator
         NextWeatherItemCommand = new AsyncRelayCommand(NextWeatherItem);
         PreviousWeatherItemCommand = new AsyncRelayCommand(PreviousWeatherItem);
         SaveDataCommand = new AsyncRelayCommand(SaveData);
+        
     }
+
+    private void SetLanguageDictionary()
+    {
+        _dict = new ResourceDictionary();
+        ResourceDictionary dict = new ResourceDictionary();
+        switch (Thread.CurrentThread.CurrentCulture.ToString())
+        {
+            case "en-US":
+                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.xaml", UriKind.Absolute);
+                break;
+            case "de-DE":
+                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.de.xaml", UriKind.Relative);
+                break;
+            default:
+                dict.Source = new Uri("pack://siteoforigin:,,,/Resources/StringResources.xaml", UriKind.Relative);
+                break;
+        }
+        _dict.MergedDictionaries.Add(dict);
+
+    }
+
 
     private async Task SaveData()
     {
@@ -53,7 +78,7 @@ public class MainWindowViewModel : ObservableValidator
         {
             return;
         }
-        
+
         SaveLoadService loadService = new SaveLoadService();
 
         UiSettings uiSettings = new UiSettings()
@@ -65,7 +90,7 @@ public class MainWindowViewModel : ObservableValidator
             Latitude = this.SelectedCoordinateItem.Latitude,
             Longitude = this.SelectedCoordinateItem.Longitude
         };
-        
+
         loadService.SaveUiSetting(uiSettings);
     }
 
@@ -73,7 +98,7 @@ public class MainWindowViewModel : ObservableValidator
     {
         SaveLoadService loadService = new SaveLoadService();
         UiSettings loadUiSettings = loadService.LoadUiSettings();
-        
+
         if (loadUiSettings != null)
         {
             this.SelectedCoordinateItem = new Coordinate()
@@ -85,7 +110,7 @@ public class MainWindowViewModel : ObservableValidator
 
             UpdateWeatherNDayItemsList();
             UpdateWeatherRemainingDayItemsList();
-            
+
             this.IsDegree = loadUiSettings.IsDegree;
             this.IsFahrenheit = !this.IsDegree;
             this.SelectedNumberOfDays = loadUiSettings.ForecastDays;
@@ -107,7 +132,7 @@ public class MainWindowViewModel : ObservableValidator
             Temperature = 0,
             WindSpeed = 0
         };
-        
+
         _numberOfDays = new int[] { 1, 2, 3, 4, 5, 6, 7 };
         this.IsDegree = true;
         this.SelectedNumberOfDays = 0;
@@ -117,7 +142,7 @@ public class MainWindowViewModel : ObservableValidator
 
     private async Task PreviousWeatherItem()
     {
-        if(_count > 0)
+        if (_count > 0)
         {
             _count--;
             this.SelectedWeatherItem = this.WeatherRemainingDayItemsList[_count];
@@ -128,7 +153,7 @@ public class MainWindowViewModel : ObservableValidator
 
     private async Task NextWeatherItem()
     {
-        if(_count+1 < WeatherRemainingDayItemsList.Count)
+        if (_count + 1 < WeatherRemainingDayItemsList.Count)
         {
             _count++;
             this.SelectedWeatherItem = this.WeatherRemainingDayItemsList[_count];
@@ -146,8 +171,8 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _isFahrenheit, value);
         }
     }
-    
-    public Coordinate SelectedCoordinateItem 
+
+    public Coordinate SelectedCoordinateItem
     {
         get => _selectedCoordinateItem;
         set
@@ -155,7 +180,7 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _selectedCoordinateItem, value);
         }
     }
-    
+
     public string SearchValue
     {
         get => _searchValue;
@@ -187,7 +212,7 @@ public class MainWindowViewModel : ObservableValidator
     {
         get
         {
-            return _selectedWeatherItem; 
+            return _selectedWeatherItem;
         }
         set
         {
@@ -197,16 +222,16 @@ public class MainWindowViewModel : ObservableValidator
 
     public ObservableCollection<WeatherItem> WeatherRemainingDayItemsList
     {
-        get => _weatherRemainingDayItemsList; 
+        get => _weatherRemainingDayItemsList;
         set
         {
             SetProperty(ref _weatherRemainingDayItemsList, value);
         }
     }
-    
+
     public ObservableCollection<WeatherItem> WeatherNDayItemsList
     {
-        get => _weatherNDaysItemsList; 
+        get => _weatherNDaysItemsList;
         set
         {
             SetProperty(ref _weatherNDaysItemsList, value);
@@ -221,7 +246,7 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _numberOfDays, value);
         }
     }
-    
+
     public int SelectedNumberOfDays
     {
         get => _selectedNumberOfDays;
@@ -250,8 +275,8 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _temperatureStringFormat, value);
         }
     }
-    
-    public string SelectedSearchItem 
+
+    public string SelectedSearchItem
     {
         get => _selectedSearchSearchItem;
         set
@@ -262,8 +287,8 @@ public class MainWindowViewModel : ObservableValidator
             UpdateWeatherRemainingDayItemsList();
         }
     }
-    
-    public bool SearchValueDropDown 
+
+    public bool SearchValueDropDown
     {
         get => _searchValueDropDown;
         set
@@ -271,8 +296,8 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _searchValueDropDown, value);
         }
     }
-    
-    public string SearchItem 
+
+    public string SearchItem
     {
         get => _searchItem;
         set
@@ -283,7 +308,7 @@ public class MainWindowViewModel : ObservableValidator
         }
     }
 
-    public ObservableCollection<string> CityItemsList 
+    public ObservableCollection<string> CityItemsList
     {
         get => _cityItemsList;
         set
@@ -291,8 +316,8 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _cityItemsList, value);
         }
     }
-    
-    public string City 
+
+    public string City
     {
         get => _city;
         set
@@ -300,7 +325,7 @@ public class MainWindowViewModel : ObservableValidator
             SetProperty(ref _city, value);
         }
     }
-    
+
     //Commands
     public IAsyncRelayCommand NextWeatherItemCommand { get; }
     public IAsyncRelayCommand PreviousWeatherItemCommand { get; }
@@ -311,13 +336,13 @@ public class MainWindowViewModel : ObservableValidator
     {
         if (this.SelectedCoordinateItem == null)
             return;
-        
+
         WeatherItemService service = new WeatherItemService();
-        
+
         this.WeatherRemainingDayItemsList.Clear();
-        
+
         var items = await service.GetWeatherDataOfRemainingDay(this.SelectedCoordinateItem.Latitude, this.SelectedCoordinateItem.Longitude);
-        
+
         foreach (var item in items)
         {
             if (item.DateTime.Hour == DateTime.Now.Hour)
@@ -328,27 +353,27 @@ public class MainWindowViewModel : ObservableValidator
 
         foreach (var item in items)
         {
-            if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 || 
+            if (item.DateTime.Hour == 6 || item.DateTime.Hour == 12 ||
                 item.DateTime.Hour == 18 || item.DateTime.Hour == 23)
             {
                 this.WeatherRemainingDayItemsList.Add(item);
             }
         }
-        
+
         this.SelectedWeatherItem = this.WeatherRemainingDayItemsList.First();
         GetIconSource(this.SelectedWeatherItem);
         GetDayPeriod(this.SelectedWeatherItem);
     }
-    
+
     private async Task UpdateWeatherNDayItemsList()
     {
         if (this.SelectedCoordinateItem == null)
             return;
-        
+
         WeatherItemService service = new WeatherItemService();
-        
+
         this.WeatherNDayItemsList.Clear();
-        
+
         var items = await service.GetWeatherDataOfNDays(this.SelectedCoordinateItem.Latitude, this.SelectedCoordinateItem.Longitude);
 
         int index = 0;
@@ -363,39 +388,41 @@ public class MainWindowViewModel : ObservableValidator
             }
         }
     }
-    
+
     private void GetIconSource(WeatherItem item)
     {
         this.IconSource = "pack://siteoforigin:,,,/Resources/weathericon/" + item.SymbolCode + ".png";
     }
-    
+
     private void GetDayPeriod(WeatherItem item)
     {
-        if (item.DateTime.Hour == DateTime.Now.Hour && this.DayPeriod != "Jetzt")
+        if (item.DateTime.Hour == DateTime.Now.Hour && this.DayPeriod != _dict["Jetzt"].ToString())
+        //if (item.DateTime.Hour == DateTime.Now.Hour && this.DayPeriod != "Jetzt")
         {
-            this.DayPeriod = "Jetzt";
+            this.DayPeriod = _dict["Jetzt"].ToString();
+            //this.DayPeriod = "Jetzt";
         }
         else
         {
             if (item.DateTime.Hour == 6)
             {
-                this.DayPeriod = "Vormittag";
+                this.DayPeriod = _dict["Vormittag"].ToString();
             }
             if (item.DateTime.Hour == 12)
             {
-                this.DayPeriod = "Nachmittag";
+                this.DayPeriod = _dict["Nachmittag"].ToString();
             }
             if (item.DateTime.Hour == 18)
             {
-                this.DayPeriod = "Abend";
+                this.DayPeriod = _dict["Abend"].ToString();
             }
             if (item.DateTime.Hour == 23)
             {
-                this.DayPeriod = "Nacht";
+                this.DayPeriod = _dict["Nacht"].ToString();
             }
         }
     }
-    
+
     private void UpdateTempFormatstring()
     {
         if (this.IsDegree)
@@ -407,7 +434,7 @@ public class MainWindowViewModel : ObservableValidator
             this.TemperatureFormatString = "{0:0.0}°F";
         }
     }
-    
+
     private void SetSelectedCoordinateItem()
     {
         foreach (var item in _coordinatesItemsList)
@@ -418,15 +445,15 @@ public class MainWindowViewModel : ObservableValidator
             }
         }
     }
-    
+
     private async Task UpdateCityItemsList()
     {
         _geoDataCancellationTokenSource = new CancellationTokenSource();
-        
+
         if (SearchItem.Length >= 1)
         {
             this.SearchValueDropDown = true;
-            
+
             this.CityItemsList.Clear();
 
             GeoDataService service = new GeoDataService();

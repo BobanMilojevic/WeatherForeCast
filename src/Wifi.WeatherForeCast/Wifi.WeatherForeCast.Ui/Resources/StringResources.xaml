@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="temperature">Temperature:</system:String>
+    <system:String x:Key="perceivedTemperature">Perceived Temperatur:</system:String>
+    <system:String x:Key="language">Language</system:String>
+    <system:String x:Key="humidity">Humidity:</system:String>
+    <system:String x:Key="airpressure">Air Pressure:</system:String>
+    <system:String x:Key="windSpeed">Wind Speed:</system:String>
+    <system:String x:Key="WettervorhersageFuerTage">Number of Days for weatherforcast:</system:String>
+    <system:String x:Key="Nacht">Night</system:String>
+    <system:String x:Key="Vormittag">Morning</system:String>
+    <system:String x:Key="Nachmittag">Afternoon</system:String>
+    <system:String x:Key="Abend">Evening</system:String>
+    <system:String x:Key="Jetzt">Now</system:String>
+</ResourceDictionary>
