@@ -293,7 +293,23 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Page Remove="Resources\StringResources.de.xaml" />
+      <Page Remove="Resources\StringResources.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Resources\controlicon\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\StringResources.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <SubType>Designer</SubType>
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Resources\StringResources.de.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

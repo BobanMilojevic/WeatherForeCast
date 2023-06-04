@@ -66,6 +66,8 @@ namespace Wifi.WeatherForeCast.Geodata
         {
             HttpClient client = new HttpClient();
             //client.BaseAddress = new Uri(requestString);
+            client.DefaultRequestHeaders.AcceptLanguage.Clear();
+            client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("de-DE"));
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("PostmanRuntime", "7.32.2"));
